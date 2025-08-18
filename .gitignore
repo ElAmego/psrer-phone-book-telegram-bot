@@ -5,6 +5,8 @@ target/
 
 ### IntelliJ IDEA ###
 .idea/
+.dispatcher/src/main/resources/
+.logs/
 *.iws
 *.iml
 *.ipr
