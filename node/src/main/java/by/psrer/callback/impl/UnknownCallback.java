@@ -1,22 +1,23 @@
-package by.psrer.command.user;
+package by.psrer.callback.impl;
 
-import by.psrer.command.Command;
+import by.psrer.callback.Callback;
 import by.psrer.entity.AppUser;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
 import org.springframework.stereotype.Service;
 
 @Service
-public final class CommandStart implements Command {
+@SuppressWarnings("unused")
+public final class UnknownCallback implements Callback {
     private final MessageUtils messageUtils;
 
-    public CommandStart(final MessageUtils messageUtils) {
+    public UnknownCallback(final MessageUtils messageUtils) {
         this.messageUtils = messageUtils;
     }
 
     @Override
     public void execute(final AppUser appUser) {
         final Long chatId = appUser.getTelegramUserId();
-        messageUtils.sendTextMessage(chatId, new Answer("Executing start command", null));
+        messageUtils.sendTextMessage(chatId, new Answer("Недоступно", null));
     }
 }

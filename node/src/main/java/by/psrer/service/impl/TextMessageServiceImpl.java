@@ -4,23 +4,20 @@ import by.psrer.command.UserCommandContainer;
 import by.psrer.dao.AppUserConfigDAO;
 import by.psrer.dao.AppUserDAO;
 import by.psrer.entity.AppUser;
-import by.psrer.entity.AppUserConfig;
 import by.psrer.entity.enums.UserState;
-import by.psrer.service.MainService;
+import by.psrer.service.TextMessageService;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 
-import static by.psrer.entity.enums.Role.USER;
 import static by.psrer.entity.enums.UserState.BASIC;
 
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("unused")
-public final class MainServiceImpl implements MainService {
+public final class TextMessageServiceImpl implements TextMessageService {
     private final AppUserDAO appUserDAO;
     private final AppUserConfigDAO appUserConfigDAO;
     private final UserCommandContainer userCommandContainer;
@@ -28,8 +25,7 @@ public final class MainServiceImpl implements MainService {
 
     @Override
     public void handleCommand(final Update update) {
-        final AppUser appUser = findOrSaveAppUser(update);
-
+        final AppUser appUser = messageUtils.findOrSaveAppUser(update);
         processServiceCommand(update, appUser);
     }
 
@@ -47,30 +43,5 @@ public final class MainServiceImpl implements MainService {
                                 "/help",null));
             }
         }
-    }
-
-    private AppUser findOrSaveAppUser(final Update update) {
-        final User user = update.getMessage().getFrom();
-        final AppUser persistanceAppUser = appUserDAO.findAppUserByTelegramUserId(user.getId());
-        if (persistanceAppUser == null) {
-            AppUserConfig appUserConfig = AppUserConfig.builder()
-                    .role(USER)
-                    .userState(BASIC)
-                    .build();
-
-            appUserConfig = appUserConfigDAO.save(appUserConfig);
-
-            final AppUser transientAppUser = AppUser.builder()
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .username(user.getUserName())
-                    .telegramUserId(user.getId())
-                    .appUserConfigId(appUserConfig)
-                    .build();
-
-            return appUserDAO.save(transientAppUser);
-        }
-
-        return persistanceAppUser;
     }
 }

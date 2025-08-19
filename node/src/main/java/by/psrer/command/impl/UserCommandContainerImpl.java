@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@SuppressWarnings("unused")
 public final class UserCommandContainerImpl implements UserCommandContainer {
     private final Map<String, Command> commandMap;
     private final UnknownCommand unknownCommand;
