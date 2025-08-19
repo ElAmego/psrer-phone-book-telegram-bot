@@ -1,15 +1,24 @@
 package by.psrer.utils.impl;
 
+import by.psrer.dao.AppUserConfigDAO;
+import by.psrer.dao.AppUserDAO;
+import by.psrer.entity.AppUser;
+import by.psrer.entity.AppUserConfig;
 import by.psrer.service.ProducerService;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static by.psrer.entity.enums.Role.USER;
+import static by.psrer.entity.enums.UserState.BASIC;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +26,8 @@ import java.util.List;
 public final class MessageUtilsImpl implements MessageUtils {
     private static final int TELEGRAM_MESSAGE_LIMIT = 3000;
     private final ProducerService producerService;
+    private final AppUserDAO appUserDAO;
+    private final AppUserConfigDAO appUserConfigDAO;
 
     @Override
     public void sendTextMessage(final Long chatId, final Answer answer) {
@@ -41,6 +52,32 @@ public final class MessageUtilsImpl implements MessageUtils {
         // TODO сделать обработку кнопок
 
         producerService.produceAnswer(sendMessage);
+    }
+
+    @Override
+    public AppUser findOrSaveAppUser(Update update) {
+        final User user = update.getMessage().getFrom();
+        final AppUser persistanceAppUser = appUserDAO.findAppUserByTelegramUserId(user.getId());
+        if (persistanceAppUser == null) {
+            AppUserConfig appUserConfig = AppUserConfig.builder()
+                    .role(USER)
+                    .userState(BASIC)
+                    .build();
+
+            appUserConfig = appUserConfigDAO.save(appUserConfig);
+
+            final AppUser transientAppUser = AppUser.builder()
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .username(user.getUserName())
+                    .telegramUserId(user.getId())
+                    .appUserConfigId(appUserConfig)
+                    .build();
+
+            return appUserDAO.save(transientAppUser);
+        }
+
+        return persistanceAppUser;
     }
 
     private List<Answer> splitAnswer(final Answer answer) {

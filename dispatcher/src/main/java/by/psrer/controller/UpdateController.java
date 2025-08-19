@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import static by.psrer.model.RabbitQueue.CALLBACK;
 import static by.psrer.model.RabbitQueue.USER_TEXT_MESSAGE;
 
 @Component
@@ -32,6 +33,8 @@ public final class UpdateController {
 
         if (update.hasMessage()) {
             distributeMessagesByType(update);
+        } else if (update.hasCallbackQuery()) {
+            processCallback(update);
         } else {
             log.error("Received unsupported message type " + update);
         }
@@ -45,6 +48,10 @@ public final class UpdateController {
         } else {
             setUnsupportedMessageTypeView(update);
         }
+    }
+
+    private void processCallback(final Update update) {
+        updateProducer.produce(CALLBACK, update);
     }
 
     private void processTextMessage(final Update update) {
