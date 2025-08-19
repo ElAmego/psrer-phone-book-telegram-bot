@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static by.psrer.model.RabbitQueue.ANSWER_MESSAGE;
+import static by.psrer.model.RabbitQueue.CALLBACK;
 import static by.psrer.model.RabbitQueue.USER_TEXT_MESSAGE;
 
 @Configuration
@@ -25,5 +26,10 @@ public class RabbitConfiguration {
     @Bean
     public Queue answerMessageQueue() {
         return new Queue(ANSWER_MESSAGE);
+    }
+
+    @Bean
+    public Queue callBackQueue() {
+        return new Queue(CALLBACK);
     }
 }
