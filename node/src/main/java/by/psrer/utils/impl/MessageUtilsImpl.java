@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static by.psrer.entity.enums.Role.USER;
+import static by.psrer.entity.enums.Status.NOT_ACTIVATED;
 import static by.psrer.entity.enums.UserState.BASIC;
 
 @Service
@@ -62,6 +63,7 @@ public final class MessageUtilsImpl implements MessageUtils {
             AppUserConfig appUserConfig = AppUserConfig.builder()
                     .role(USER)
                     .userState(BASIC)
+                    .status(NOT_ACTIVATED)
                     .build();
 
             appUserConfig = appUserConfigDAO.save(appUserConfig);
