@@ -1,6 +1,7 @@
 package by.psrer.entity;
 
 import by.psrer.entity.enums.Role;
+import by.psrer.entity.enums.Status;
 import by.psrer.entity.enums.UserState;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,5 +33,7 @@ public class AppUserConfig {
     private Role role;
     @Enumerated(EnumType.STRING)
     private UserState userState;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     private Long intermediateValue;
 }

@@ -4,6 +4,7 @@ import by.psrer.command.UserCommandContainer;
 import by.psrer.dao.AppUserConfigDAO;
 import by.psrer.dao.AppUserDAO;
 import by.psrer.entity.AppUser;
+import by.psrer.entity.enums.Status;
 import by.psrer.entity.enums.UserState;
 import by.psrer.service.TextMessageService;
 import by.psrer.utils.Answer;
@@ -30,6 +31,8 @@ public final class TextMessageServiceImpl implements TextMessageService {
     }
 
     private void processServiceCommand(final Update update, final AppUser appUser) {
+        if (!checkStatusAccount(appUser)) return;
+
         final String textMessage = update.getMessage().getText();
         final UserState userState = appUser.getAppUserConfigId().getUserState();
 
@@ -43,5 +46,26 @@ public final class TextMessageServiceImpl implements TextMessageService {
                                 "/help",null));
             }
         }
+    }
+
+    private boolean checkStatusAccount(final AppUser appUser) {
+        final Status userAccountStatus = appUser.getAppUserConfigId().getStatus();
+        final Long chatId = appUser.getTelegramUserId();
+
+        if (userAccountStatus == Status.NOT_ACTIVATED) {
+            messageUtils.sendTextMessage(chatId,
+                    new Answer("Ваш аккаунт не активирован! Заявка отправлена, ожидайте.",
+                            null));
+            return false;
+        }
+
+        if (userAccountStatus == Status.BLOCKED) {
+            messageUtils.sendTextMessage(chatId,
+                    new Answer("Вы находитесь в черном списке.",
+                            null));
+            return false;
+        }
+
+        return true;
     }
 }
