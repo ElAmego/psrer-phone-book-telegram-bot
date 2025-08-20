@@ -13,9 +13,10 @@ public final class CallbackContainerImpl implements CallbackContainer {
     final Map<String, Callback> callbackMap;
     private final UnknownCallback unknownCallback;
 
-    public CallbackContainerImpl(final UnknownCallback unknownCallback) {
+    public CallbackContainerImpl(final UnknownCallback unknownCallback, final CallbackHelp callbackHelp) {
         this.unknownCallback = unknownCallback;
         callbackMap = new HashMap<>();
+        callbackMap.put("helpBtn", callbackHelp);
     }
 
     @Override

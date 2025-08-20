@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
@@ -50,13 +51,18 @@ public final class MessageUtilsImpl implements MessageUtils {
                 .text(answer.answerText())
                 .build();
 
-        // TODO сделать обработку кнопок
+        if (inlineKeyboardButtonList != null) {
+            sendMessage.setReplyMarkup(InlineKeyboardMarkup.builder()
+                    .keyboard(List.of(
+                            inlineKeyboardButtonList))
+                    .build());
+        }
 
         producerService.produceAnswer(sendMessage);
     }
 
     @Override
-    public AppUser findOrSaveAppUser(Update update) {
+    public AppUser findOrSaveAppUser(final Update update) {
         final User user = update.getMessage().getFrom();
         final AppUser persistanceAppUser = appUserDAO.findAppUserByTelegramUserId(user.getId());
         if (persistanceAppUser == null) {
@@ -80,6 +86,17 @@ public final class MessageUtilsImpl implements MessageUtils {
         }
 
         return persistanceAppUser;
+    }
+
+    @Override
+    public List<InlineKeyboardButton> createHelpCommand() {
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
+        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
+                .text("Список команд")
+                .callbackData("helpBtn")
+                .build());
+
+        return inlineKeyboardButtonList;
     }
 
     private List<Answer> splitAnswer(final Answer answer) {

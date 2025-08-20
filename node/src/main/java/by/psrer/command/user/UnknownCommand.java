@@ -18,7 +18,7 @@ public final class UnknownCommand implements Command {
     public void execute(final AppUser appUser) {
         final Long chatId = appUser.getTelegramUserId();
         messageUtils.sendTextMessage(chatId,
-                new Answer("Вы ввели неизвестную команду. Список доступных команд – /help",
-                        null));
+                new Answer("Вы ввели неизвестную команду.",
+                        messageUtils.createHelpCommand()));
     }
 }
