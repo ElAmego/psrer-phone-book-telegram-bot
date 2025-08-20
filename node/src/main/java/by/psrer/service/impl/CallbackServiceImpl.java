@@ -1,9 +1,9 @@
 package by.psrer.service.impl;
 
 import by.psrer.callback.CallbackContainer;
+import by.psrer.dao.AppUserDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.service.CallbackService;
-import by.psrer.utils.MessageUtils;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -11,19 +11,19 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Service
 @SuppressWarnings("unused")
 public final class CallbackServiceImpl implements CallbackService {
-    private final MessageUtils messageUtils;
     private final CallbackContainer callbackContainer;
+    private final AppUserDAO appUserDAO;
 
-    public CallbackServiceImpl(final MessageUtils messageUtils, final CallbackContainer callbackContainer) {
-        this.messageUtils = messageUtils;
+    public CallbackServiceImpl(final CallbackContainer callbackContainer, final AppUserDAO appUserDAO) {
         this.callbackContainer = callbackContainer;
+        this.appUserDAO = appUserDAO;
     }
 
     @Override
     public void handleCallback(final Update update) {
-        final AppUser appUser = messageUtils.findOrSaveAppUser(update);
         final CallbackQuery callbackQuery = update.getCallbackQuery();
-
+        final Long chatId = callbackQuery.getMessage().getChatId();
+        final AppUser appUser = appUserDAO.findAppUserByTelegramUserId(chatId);
         processCallback(appUser, callbackQuery);
     }
 

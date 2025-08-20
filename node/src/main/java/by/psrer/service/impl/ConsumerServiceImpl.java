@@ -1,5 +1,6 @@
 package by.psrer.service.impl;
 
+import by.psrer.service.CallbackService;
 import by.psrer.service.ConsumerService;
 import by.psrer.service.TextMessageService;
 import lombok.extern.log4j.Log4j;
@@ -15,9 +16,11 @@ import static by.psrer.model.RabbitQueue.USER_TEXT_MESSAGE;
 @Log4j
 public final class ConsumerServiceImpl implements ConsumerService {
     private final TextMessageService textMessageService;
+    private final CallbackService callbackService;
 
-    public ConsumerServiceImpl(final TextMessageService textMessageService) {
+    public ConsumerServiceImpl(final TextMessageService textMessageService, final CallbackService callbackService) {
         this.textMessageService = textMessageService;
+        this.callbackService = callbackService;
     }
 
     @Override
@@ -31,6 +34,6 @@ public final class ConsumerServiceImpl implements ConsumerService {
     @RabbitListener(queues = CALLBACK)
     public void consumeCallback(final Update update) {
         log.debug("NODE: Callback is received");
-        textMessageService.handleCommand(update);
+        callbackService.handleCallback(update);
     }
 }

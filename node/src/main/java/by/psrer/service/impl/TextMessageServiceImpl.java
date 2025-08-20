@@ -42,8 +42,8 @@ public final class TextMessageServiceImpl implements TextMessageService {
                 userCommandContainer.retrieveCommand(cmd).execute(appUser);
             } else {
                 messageUtils.sendTextMessage(appUser.getTelegramUserId(),
-                        new Answer("Введенный вами текст не является командой. Список доступных команд – " +
-                                "/help",null));
+                        new Answer("Введенный вами текст не является командой.",
+                                messageUtils.createHelpCommand()));
             }
         }
     }
