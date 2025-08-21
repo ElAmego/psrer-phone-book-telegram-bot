@@ -10,10 +10,12 @@ import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.List;
 import java.util.Optional;
 
+import static by.psrer.entity.enums.UserState.BASIC;
 import static by.psrer.entity.enums.UserState.DEPARTMENT_SELECTION;
 
 @Service
@@ -27,6 +29,7 @@ public final class UserStateHandlerAreaSelection implements UserStateHandler {
     public void execute(final AppUser appUser, final String textMessage) {
         final Long chatId = appUser.getTelegramUserId();
         final StringBuilder output = new StringBuilder();
+        List<InlineKeyboardButton> inlineKeyboardButtonList = messageUtils.createCancelCommand();
 
         if (textMessage.matches("[-+]?\\d+")) {
             final int selectedAreaId = Integer.parseInt(textMessage);
@@ -39,7 +42,7 @@ public final class UserStateHandlerAreaSelection implements UserStateHandler {
                 if (!departmentList.isEmpty()) {
                     output.append("""
                     Вы перешли в режим выбора. Для выбора необходимого отдела отправьте соответствующую цифру. \
-                    Нажмите на кнопку "Выйти из режима" чтобы покинуть режим выбора.
+                    Нажмите на кнопку "Покинуть режим выбора" чтобы выйти из режима выбора.
                 
                     Список отделов:
                     """);
@@ -54,20 +57,22 @@ public final class UserStateHandlerAreaSelection implements UserStateHandler {
                     messageUtils.changeUserStateWithIntermediateValue(appUser, DEPARTMENT_SELECTION, areaId);
                 } else {
                     output.append("Список отделов текущего участка пуст. Вы вышли из режима выбора.");
+                    inlineKeyboardButtonList = null;
+                    messageUtils.changeUserState(appUser, BASIC);
                 }
             } else {
                 output.append("""
                     В списке нет выбранного вами значения. Введите корректное значение или нажмите на кнопку \
-                    "Выйти из режима" чтобы покинуть режим выбора.
+                    "Покинуть режим выбора"
                     """);
             }
         } else {
             output.append("""
                     Введенное вами значение не является цифрой. Введите корректное значение или нажмите на кнопку \
-                    "Выйти из режима" чтобы покинуть режим выбора.
+                    "Покинуть режим выбора".
                     """);
         }
 
-        messageUtils.sendTextMessage(chatId, new Answer(output.toString(), null));
+        messageUtils.sendTextMessage(chatId, new Answer(output.toString(), inlineKeyboardButtonList));
     }
 }
