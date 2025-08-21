@@ -4,6 +4,7 @@ import by.psrer.dao.AppUserConfigDAO;
 import by.psrer.dao.AppUserDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.entity.AppUserConfig;
+import by.psrer.entity.enums.UserState;
 import by.psrer.service.ProducerService;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
@@ -26,7 +27,7 @@ import static by.psrer.entity.enums.UserState.BASIC;
 @RequiredArgsConstructor
 @SuppressWarnings("unused")
 public final class MessageUtilsImpl implements MessageUtils {
-    private static final int TELEGRAM_MESSAGE_LIMIT = 3000;
+    private static final int TELEGRAM_MESSAGE_LIMIT = 2000;
     private final ProducerService producerService;
     private final AppUserDAO appUserDAO;
     private final AppUserConfigDAO appUserConfigDAO;
@@ -97,6 +98,22 @@ public final class MessageUtilsImpl implements MessageUtils {
                 .build());
 
         return inlineKeyboardButtonList;
+    }
+
+    @Override
+    public void changeUserState(final AppUser appUser, final UserState userState) {
+        final AppUserConfig appUserConfig = appUser.getAppUserConfigId();
+        appUserConfig.setUserState(userState);
+        appUserConfigDAO.save(appUserConfig);
+    }
+
+    @Override
+    public void changeUserStateWithIntermediateValue(final AppUser appUser, final UserState userState,
+                                                     final Long intermediateValue) {
+        final AppUserConfig appUserConfig = appUser.getAppUserConfigId();
+        appUserConfig.setUserState(userState);
+        appUserConfig.setIntermediateValue(intermediateValue);
+        appUserConfigDAO.save(appUserConfig);
     }
 
     private List<Answer> splitAnswer(final Answer answer) {
