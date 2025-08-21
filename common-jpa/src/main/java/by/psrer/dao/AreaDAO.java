@@ -19,7 +19,7 @@ public interface AreaDAO extends JpaRepository<Area, Long> {
             return Optional.empty();
         }
         try {
-            return Optional.ofNullable(findNth(n));
+            return Optional.ofNullable(findNth(n-1));
         } catch (Exception e) {
             return Optional.empty();
         }

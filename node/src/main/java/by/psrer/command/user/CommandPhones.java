@@ -44,7 +44,7 @@ public final class CommandPhones implements Command {
             int inc = 0;
 
             for (final Area areaFromList: areaList) {
-                output.append(inc++).append(": ").append(areaFromList.getAreaName()).append("\n");
+                output.append(++inc).append(": ").append(areaFromList.getAreaName()).append("\n");
             }
 
             messageUtils.changeUserState(appUser, AREA_SELECTION);
