@@ -7,6 +7,7 @@ import by.psrer.entity.Area;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.List;
 
@@ -27,13 +28,15 @@ public final class CommandPhones implements Command {
         final Long chatId = appUser.getTelegramUserId();
         final List<Area> areaList = areaDAO.findAllByOrderByAreaIdAsc();
         final StringBuilder output = new StringBuilder();
+        List<InlineKeyboardButton> inlineKeyboardButtonList = messageUtils.createCancelCommand();
 
         if (areaList.isEmpty()) {
             output.append("Список участков пуст.");
+            inlineKeyboardButtonList = null;
         } else {
             output.append("""
                         Вы перешли в режим выбора. Для выбора необходимого участка отправьте соответствующую цифру. \
-                        Нажмите на кнопку "Выйти из режима" чтобы покинуть режим выбора.
+                        Нажмите на кнопку "Покинуть режим выбора" чтобы выйти из режима выбора.
                         
                         Список участков:
                         """);
@@ -47,6 +50,6 @@ public final class CommandPhones implements Command {
             messageUtils.changeUserState(appUser, AREA_SELECTION);
         }
 
-        messageUtils.sendTextMessage(chatId, new Answer(output.toString(), null));
+        messageUtils.sendTextMessage(chatId, new Answer(output.toString(), inlineKeyboardButtonList));
     }
 }

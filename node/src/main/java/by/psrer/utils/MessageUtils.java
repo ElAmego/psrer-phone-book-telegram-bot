@@ -11,6 +11,7 @@ public interface MessageUtils {
     void sendTextMessage(final Long chatId, final Answer answer);
     AppUser findOrSaveAppUser(final Update update);
     List<InlineKeyboardButton> createHelpCommand();
+    List<InlineKeyboardButton> createCancelCommand();
     void changeUserState(final AppUser appUser, final UserState userState);
     void changeUserStateWithIntermediateValue(final AppUser appUser, final UserState userState,
                                               final Long intermediateValue);
