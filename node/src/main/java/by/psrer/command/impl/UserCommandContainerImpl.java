@@ -3,6 +3,7 @@ package by.psrer.command.impl;
 import by.psrer.command.Command;
 import by.psrer.command.UserCommandContainer;
 import by.psrer.command.user.CommandHelp;
+import by.psrer.command.user.CommandPhones;
 import by.psrer.command.user.CommandStart;
 import by.psrer.command.user.UnknownCommand;
 import org.springframework.stereotype.Component;
@@ -17,10 +18,11 @@ public final class UserCommandContainerImpl implements UserCommandContainer {
     private final UnknownCommand unknownCommand;
 
     public UserCommandContainerImpl(final CommandStart commandStart, final UnknownCommand unknownCommand,
-                                    final CommandHelp commandHelp) {
+                                    final CommandHelp commandHelp, final CommandPhones commandPhones) {
         commandMap = new HashMap<>();
         commandMap.put("/start", commandStart);
         commandMap.put("/help", commandHelp);
+        commandMap.put("/phones", commandPhones);
         this.unknownCommand = unknownCommand;
     }
 

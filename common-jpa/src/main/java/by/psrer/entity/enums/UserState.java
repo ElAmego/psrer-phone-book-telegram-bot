@@ -1,5 +1,7 @@
 package by.psrer.entity.enums;
 
 public enum UserState {
-    BASIC
+    BASIC,
+    AREA_SELECTION,
+    DEPARTMENT_SELECTION
 }

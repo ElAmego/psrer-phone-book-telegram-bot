@@ -1,19 +1,17 @@
 package by.psrer.service.impl;
 
-import by.psrer.command.UserCommandContainer;
 import by.psrer.dao.AppUserConfigDAO;
 import by.psrer.dao.AppUserDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.entity.enums.Status;
 import by.psrer.entity.enums.UserState;
 import by.psrer.service.TextMessageService;
+import by.psrer.userState.UserStateHandlerContainer;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import static by.psrer.entity.enums.UserState.BASIC;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +19,7 @@ import static by.psrer.entity.enums.UserState.BASIC;
 public final class TextMessageServiceImpl implements TextMessageService {
     private final AppUserDAO appUserDAO;
     private final AppUserConfigDAO appUserConfigDAO;
-    private final UserCommandContainer userCommandContainer;
+    private final UserStateHandlerContainer userStateHandlerContainer;
     private final MessageUtils messageUtils;
 
     @Override
@@ -36,16 +34,7 @@ public final class TextMessageServiceImpl implements TextMessageService {
         final String textMessage = update.getMessage().getText();
         final UserState userState = appUser.getAppUserConfigId().getUserState();
 
-        if (userState == BASIC) {
-            if (textMessage.startsWith("/")) {
-                final String cmd = textMessage.split(" ")[0].toLowerCase();
-                userCommandContainer.retrieveCommand(cmd).execute(appUser);
-            } else {
-                messageUtils.sendTextMessage(appUser.getTelegramUserId(),
-                        new Answer("Введенный вами текст не является командой.",
-                                messageUtils.createHelpCommand()));
-            }
-        }
+        userStateHandlerContainer.retrieveUserStateHandler(userState).execute(appUser, textMessage);
     }
 
     private boolean checkStatusAccount(final AppUser appUser) {
