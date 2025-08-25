@@ -25,6 +25,7 @@ public final class TextMessageServiceImpl implements TextMessageService {
     @Override
     public void handleCommand(final Update update) {
         final AppUser appUser = messageUtils.findOrSaveAppUser(update);
+        messageUtils.deleteUserMessage(appUser, update);
         processServiceCommand(update, appUser);
     }
 

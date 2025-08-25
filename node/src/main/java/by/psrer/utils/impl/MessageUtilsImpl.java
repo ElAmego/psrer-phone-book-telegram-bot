@@ -11,6 +11,7 @@ import by.psrer.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -125,6 +126,19 @@ public final class MessageUtilsImpl implements MessageUtils {
         appUserConfig.setUserState(userState);
         appUserConfig.setIntermediateValue(intermediateValue);
         appUserConfigDAO.save(appUserConfig);
+    }
+
+    @Override
+    public void deleteUserMessage(final AppUser appUser, final Update update) {
+        final Long telegramUserId = appUser.getTelegramUserId();
+        final int messageId = update.getMessage().getMessageId();
+
+        final DeleteMessage deleteMessage = DeleteMessage.builder()
+                .chatId(telegramUserId)
+                .messageId(messageId)
+                .build();
+
+        producerService.produceDeleteMessage(deleteMessage);
     }
 
     private List<Answer> splitAnswer(final Answer answer) {
