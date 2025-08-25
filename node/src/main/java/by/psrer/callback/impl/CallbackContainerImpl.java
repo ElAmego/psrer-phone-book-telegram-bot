@@ -2,12 +2,12 @@ package by.psrer.callback.impl;
 
 import by.psrer.callback.Callback;
 import by.psrer.callback.CallbackContainer;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Component
 @SuppressWarnings("unused")
 public final class CallbackContainerImpl implements CallbackContainer {
     final Map<String, Callback> callbackMap;

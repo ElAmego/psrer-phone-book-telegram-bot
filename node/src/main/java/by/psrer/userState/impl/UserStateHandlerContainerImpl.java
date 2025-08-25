@@ -3,7 +3,7 @@ package by.psrer.userState.impl;
 import by.psrer.entity.enums.UserState;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.userState.UserStateHandlerContainer;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import static by.psrer.entity.enums.UserState.AREA_SELECTION;
 import static by.psrer.entity.enums.UserState.DEPARTMENT_SELECTION;
 import static by.psrer.entity.enums.UserState.FIO_SELECTION;
 
-@Service
+@Component
 @SuppressWarnings("unused")
 public final class UserStateHandlerContainerImpl implements UserStateHandlerContainer {
     private final Map<UserState, UserStateHandler> userStateHandlerMap;
