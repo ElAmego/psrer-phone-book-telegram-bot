@@ -1,0 +1,54 @@
+package by.psrer.command.admin;
+
+import by.psrer.command.Command;
+import by.psrer.entity.AppUser;
+import by.psrer.utils.Answer;
+import by.psrer.utils.MessageUtils;
+import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class CommandAdmin implements Command {
+    private final MessageUtils messageUtils;
+
+    public CommandAdmin(final MessageUtils messageUtils) {
+        this.messageUtils = messageUtils;
+    }
+
+    @Override
+    public void execute(final AppUser appUser) {
+        final Long chatId = appUser.getTelegramUserId();
+        final String output = "Добро пожаловать в панель администратора!";
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = createAdminButtons();
+
+        messageUtils.sendTextMessage(chatId, new Answer(output, inlineKeyboardButtonList)   );
+    }
+
+    private List<InlineKeyboardButton> createAdminButtons() {
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
+        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
+                .text("Администраторы")
+                .callbackData("adminsBtn")
+                .build());
+
+        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
+                .text("Выдать доступ")
+                .callbackData("grantBtn")
+                .build());
+
+        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
+                .text("Отозвать доступ")
+                .callbackData("revokeBtn")
+                .build());
+
+        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
+                .text("Добавление данных")
+                .callbackData("addDataBtn")
+                .build());
+
+        return inlineKeyboardButtonList;
+    }
+}
