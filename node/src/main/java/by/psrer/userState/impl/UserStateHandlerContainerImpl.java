@@ -10,6 +10,7 @@ import java.util.Map;
 
 import static by.psrer.entity.enums.UserState.AREA_SELECTION;
 import static by.psrer.entity.enums.UserState.DEPARTMENT_SELECTION;
+import static by.psrer.entity.enums.UserState.FIO_SELECTION;
 
 @Service
 @SuppressWarnings("unused")
@@ -19,10 +20,12 @@ public final class UserStateHandlerContainerImpl implements UserStateHandlerCont
 
     public UserStateHandlerContainerImpl(final UserStateHandlerBasic userStateHandlerBasic,
                                          final UserStateHandlerAreaSelection userStateHandlerAreaSelection,
-                                         final UserStateHandlerDepartmentSelection userStateHandlerDepartmentSelection) {
+                                         final UserStateHandlerDepartmentSelection userStateHandlerDepartmentSelection,
+                                         final UserStateFioSelection userStateFioSelection) {
         userStateHandlerMap = new HashMap<>();
         userStateHandlerMap.put(AREA_SELECTION, userStateHandlerAreaSelection);
         userStateHandlerMap.put(DEPARTMENT_SELECTION, userStateHandlerDepartmentSelection);
+        userStateHandlerMap.put(FIO_SELECTION, userStateFioSelection);
 
         this.userStateHandlerBasic = userStateHandlerBasic;
     }
