@@ -22,6 +22,7 @@ public final class CommandHelp implements Command {
                 Список доступных команд:
                 /start – Стартовая страница бота.
                 /phones – Телефонная книга.
+                /search – Поиск номера по подстроке ФИО.
                 /help – Список доступных команд.
                 """;
 
