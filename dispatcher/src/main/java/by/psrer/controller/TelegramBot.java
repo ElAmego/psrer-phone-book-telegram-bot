@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -47,6 +48,16 @@ public final class TelegramBot extends TelegramLongPollingBot {
         if (message != null) {
             try {
                 execute(message);
+            } catch (final TelegramApiException e) {
+                log.error(e);
+            }
+        }
+    }
+
+    public void deleteUserMessage(final DeleteMessage deleteMessage) {
+        if (deleteMessage != null) {
+            try {
+                execute(deleteMessage);
             } catch (final TelegramApiException e) {
                 log.error(e);
             }

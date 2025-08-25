@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static by.psrer.model.RabbitQueue.ANSWER_MESSAGE;
 import static by.psrer.model.RabbitQueue.CALLBACK;
+import static by.psrer.model.RabbitQueue.DELETE_MESSAGE;
 import static by.psrer.model.RabbitQueue.USER_TEXT_MESSAGE;
 
 @Configuration
@@ -31,5 +32,10 @@ public class RabbitConfiguration {
     @Bean
     public Queue callBackQueue() {
         return new Queue(CALLBACK);
+    }
+
+    @Bean
+    public Queue deleteMessageQueue() {
+        return new Queue(DELETE_MESSAGE);
     }
 }
