@@ -29,6 +29,7 @@ import static by.psrer.entity.enums.UserState.BASIC;
 @SuppressWarnings("unused")
 public final class MessageUtilsImpl implements MessageUtils {
     private static final int TELEGRAM_MESSAGE_LIMIT = 2000;
+    private static final int ROW_BTN_LIMIT = 2;
     private final ProducerService producerService;
     private final AppUserDAO appUserDAO;
     private final AppUserConfigDAO appUserConfigDAO;
@@ -46,21 +47,48 @@ public final class MessageUtilsImpl implements MessageUtils {
             return;
         }
 
-        final List<InlineKeyboardButton> inlineKeyboardButtonList = answer.inlineKeyboardButtonList();
-
         final SendMessage sendMessage = SendMessage.builder()
                 .chatId(chatId)
                 .text(answer.answerText())
                 .build();
 
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = answer.inlineKeyboardButtonList();
+
         if (inlineKeyboardButtonList != null) {
-            sendMessage.setReplyMarkup(InlineKeyboardMarkup.builder()
-                    .keyboard(List.of(
-                            inlineKeyboardButtonList))
-                    .build());
+            final InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+
+            if (inlineKeyboardButtonList.size() > 2) {
+                final List<List<InlineKeyboardButton>> rows = splitInlineKeyboardButtonList(inlineKeyboardButtonList);
+                inlineKeyboard.setKeyboard(rows);
+            } else {
+                inlineKeyboard.setKeyboard(List.of(inlineKeyboardButtonList));
+            }
+
+            sendMessage.setReplyMarkup(inlineKeyboard);
         }
 
         producerService.produceAnswer(sendMessage);
+    }
+
+    private List<List<InlineKeyboardButton>> splitInlineKeyboardButtonList(
+            final List<InlineKeyboardButton> inlineKeyboardButtonList) {
+        final List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> currentRow  = new ArrayList<>();
+
+        for (final InlineKeyboardButton inlineKeyboardButton: inlineKeyboardButtonList) {
+            currentRow.add(inlineKeyboardButton);
+
+            if (currentRow.size() == ROW_BTN_LIMIT) {
+                rows.add(currentRow);
+                currentRow  = new ArrayList<>();
+            }
+        }
+
+        if (!currentRow.isEmpty()) {
+            rows.add(currentRow);
+        }
+
+        return rows;
     }
 
     @Override
