@@ -5,9 +5,11 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 
 import static by.psrer.model.RabbitQueue.ANSWER_MESSAGE;
 import static by.psrer.model.RabbitQueue.DELETE_MESSAGE;
+import static by.psrer.model.RabbitQueue.REPLACED_MESSAGE;
 
 @Service
 @SuppressWarnings("unused")
@@ -26,5 +28,10 @@ public final class ProducerServiceImpl implements ProducerService {
     @Override
     public void produceDeleteMessage(final DeleteMessage deleteMessage) {
         rabbitTemplate.convertAndSend(DELETE_MESSAGE, deleteMessage);
+    }
+
+    @Override
+    public void produceReplacedMessage(final EditMessageText replacedMessage) {
+        rabbitTemplate.convertAndSend(REPLACED_MESSAGE, replacedMessage);
     }
 }

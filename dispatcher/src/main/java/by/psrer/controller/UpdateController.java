@@ -6,10 +6,12 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static by.psrer.model.RabbitQueue.CALLBACK;
+import static by.psrer.model.RabbitQueue.SENT_MESSAGE;
 import static by.psrer.model.RabbitQueue.USER_TEXT_MESSAGE;
 
 @Component
@@ -71,5 +73,13 @@ public final class UpdateController {
 
     public void deleteMessageHandler(final DeleteMessage deleteMessage) {
         telegramBot.deleteUserMessage(deleteMessage);
+    }
+
+    public void replacedMessageHandler(final EditMessageText replacedMessage) {
+        telegramBot.replaceBotMessage(replacedMessage);
+    }
+
+    public void processSentMessage(final Message sentMessage) {
+        updateProducer.produce(SENT_MESSAGE, sentMessage);
     }
 }

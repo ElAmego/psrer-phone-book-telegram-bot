@@ -3,6 +3,7 @@ package by.psrer.service.impl;
 import by.psrer.service.UpdateProducer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Service
@@ -17,5 +18,10 @@ public final class UpdateProducerImpl implements UpdateProducer {
     @Override
     public void produce(final String rabbitQueue, final Update update) {
         rabbitTemplate.convertAndSend(rabbitQueue, update);
+    }
+
+    @Override
+    public void produce(final String rabbitQueue, final Message sentMessage) {
+        rabbitTemplate.convertAndSend(rabbitQueue, sentMessage);
     }
 }
