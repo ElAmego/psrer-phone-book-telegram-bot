@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface MessageUtils {
     void sendTextMessage(final Long chatId, final Answer answer);
+    void sendReplacedTextMessage(final AppUser appUser, final Answer answer);
     AppUser findOrSaveAppUser(final Update update);
     List<InlineKeyboardButton> createHelpCommand();
     List<InlineKeyboardButton> createCancelCommand();

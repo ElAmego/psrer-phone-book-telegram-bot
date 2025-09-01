@@ -36,4 +36,5 @@ public class AppUserConfig {
     @Enumerated(EnumType.STRING)
     private Status status;
     private Long intermediateValue;
+    private Integer lastBotMessageId;
 }

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -68,6 +69,36 @@ public final class MessageUtilsImpl implements MessageUtils {
         }
 
         producerService.produceAnswer(sendMessage);
+    }
+
+    @Override
+    public void sendReplacedTextMessage(final AppUser appUser, final Answer answer) {
+        final Long chatId = appUser.getTelegramUserId();
+        final String text = answer.answerText();
+        final Integer messageId = appUser.getAppUserConfigId().getLastBotMessageId();
+
+        final EditMessageText replacedMessage = EditMessageText.builder()
+                .chatId(chatId)
+                .text(answer.answerText())
+                .messageId(messageId)
+                .build();
+
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = answer.inlineKeyboardButtonList();
+
+        if (inlineKeyboardButtonList != null) {
+            final InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+
+            if (inlineKeyboardButtonList.size() > 2) {
+                final List<List<InlineKeyboardButton>> rows = splitInlineKeyboardButtonList(inlineKeyboardButtonList);
+                inlineKeyboard.setKeyboard(rows);
+            } else {
+                inlineKeyboard.setKeyboard(List.of(inlineKeyboardButtonList));
+            }
+
+            replacedMessage.setReplyMarkup(inlineKeyboard);
+        }
+
+        producerService.produceReplacedMessage(replacedMessage);
     }
 
     private List<List<InlineKeyboardButton>> splitInlineKeyboardButtonList(
