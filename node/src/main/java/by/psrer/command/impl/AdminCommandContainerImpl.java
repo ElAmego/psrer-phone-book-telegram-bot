@@ -1,7 +1,7 @@
 package by.psrer.command.impl;
 
-import by.psrer.command.AdminCommandContainer;
 import by.psrer.command.Command;
+import by.psrer.command.CommandContainer;
 import by.psrer.command.admin.CommandAdmin;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Component
 @SuppressWarnings("unused")
-public class AdminCommandContainerImpl implements AdminCommandContainer {
+public final class AdminCommandContainerImpl implements CommandContainer {
     private final Map<String, Command> commandMap;
 
     public AdminCommandContainerImpl(final CommandAdmin commandAdmin) {
@@ -20,6 +20,6 @@ public class AdminCommandContainerImpl implements AdminCommandContainer {
 
     @Override
     public Command retrieveCommand(final String commandIdentifier) {
-        return commandMap.get(commandIdentifier);
+        return commandMap.getOrDefault(commandIdentifier, null);
     }
 }
