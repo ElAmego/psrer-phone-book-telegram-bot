@@ -1,7 +1,7 @@
 package by.psrer.userState.impl;
 
-import by.psrer.command.AdminCommandContainer;
-import by.psrer.command.UserCommandContainer;
+import by.psrer.command.Command;
+import by.psrer.command.CommandFactory;
 import by.psrer.entity.AppUser;
 import by.psrer.entity.enums.Role;
 import by.psrer.userState.UserStateHandler;
@@ -9,19 +9,18 @@ import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
 import org.springframework.stereotype.Service;
 
-import static by.psrer.entity.enums.Role.ADMIN;
+import java.util.Optional;
 
 @Service
 public final class UserStateHandlerBasic implements UserStateHandler {
+    private final static String NOT_A_COMMAND_TEXT = "Введенный вами текст не является командой.";
+    private final static String UNKNOWN_COMMAND_TEXT = "Такой команды не существует.";
     private final MessageUtils messageUtils;
-    private final UserCommandContainer userCommandContainer;
-    private final AdminCommandContainer adminCommandContainer;
+    private final CommandFactory commandFactory;
 
-    public UserStateHandlerBasic(final MessageUtils messageUtils, final UserCommandContainer userCommandContainer,
-                                 final AdminCommandContainer adminCommandContainer) {
+    public UserStateHandlerBasic(final MessageUtils messageUtils, final CommandFactory commandFactory) {
         this.messageUtils = messageUtils;
-        this.userCommandContainer = userCommandContainer;
-        this.adminCommandContainer = adminCommandContainer;
+        this.commandFactory = commandFactory;
     }
 
     @Override
@@ -29,15 +28,21 @@ public final class UserStateHandlerBasic implements UserStateHandler {
         if (textMessage.startsWith("/")) {
             final Role userRole = appUser.getAppUserConfigId().getRole();
             final String cmd = textMessage.split(" ")[0].toLowerCase();
-            userCommandContainer.retrieveCommand(cmd).execute(appUser);
 
-            if (userRole == ADMIN) {
-                adminCommandContainer.retrieveCommand(cmd).execute(appUser);
+            final Optional<Command> command = commandFactory.getCommand(cmd, userRole);
+
+            if (command.isPresent()) {
+                command.get().execute(appUser);
+            } else {
+                sendErrorMessage(appUser, UNKNOWN_COMMAND_TEXT);
             }
         } else {
-            messageUtils.sendTextMessage(appUser.getTelegramUserId(),
-                    new Answer("Введенный вами текст не является командой.",
-                            messageUtils.createHelpCommand()));
+            sendErrorMessage(appUser, NOT_A_COMMAND_TEXT);
         }
+    }
+
+    private void sendErrorMessage(final AppUser appUser, final String errorMessage) {
+        messageUtils.sendTextMessage(appUser.getTelegramUserId(),
+                new Answer(errorMessage, messageUtils.createHelpCommand()));
     }
 }
