@@ -14,11 +14,17 @@ public final class CallbackContainerImpl implements CallbackContainer {
     private final UnknownCallback unknownCallback;
 
     public CallbackContainerImpl(final UnknownCallback unknownCallback, final CallbackHelp callbackHelp,
-                                 final CallbackCancel callbackCancel) {
+                                 final CallbackCancel callbackCancel, final CallbackAdmins callbackAdmins,
+                                 final CallbackMainMenu callbackMainMenu, final CallbackAddAdmin callbackAddAdmin,
+                                 final CallbackRemoveAdmin callbackRemoveAdmin) {
         this.unknownCallback = unknownCallback;
         callbackMap = new HashMap<>();
         callbackMap.put("helpBtn", callbackHelp);
         callbackMap.put("cancelBtn", callbackCancel);
+        callbackMap.put("adminsBtn", callbackAdmins);
+        callbackMap.put("mainMenuBtn", callbackMainMenu);
+        callbackMap.put("addAdminBtn", callbackAddAdmin);
+        callbackMap.put("removeAdminBtn", callbackRemoveAdmin);
     }
 
     @Override
