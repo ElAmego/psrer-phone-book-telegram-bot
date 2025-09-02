@@ -18,8 +18,7 @@ public final class CallbackCancel implements Callback {
 
     @Override
     public void execute(final AppUser appUser) {
-        final Long chatId = appUser.getTelegramUserId();
-        messageUtils.sendTextMessage(chatId, new Answer("Вы вышли из режима выбора.",
+        messageUtils.sendReplacedTextMessage(appUser, new Answer("Вы вышли из режима выбора.",
                 null));
         messageUtils.changeUserState(appUser, BASIC);
     }

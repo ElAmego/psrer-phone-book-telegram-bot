@@ -1,6 +1,6 @@
-package by.psrer.command.admin;
+package by.psrer.callback.impl;
 
-import by.psrer.command.Command;
+import by.psrer.callback.Callback;
 import by.psrer.entity.AppUser;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
@@ -11,20 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CommandAdmin implements Command {
+public final class CallbackMainMenu implements Callback {
     private final MessageUtils messageUtils;
 
-    public CommandAdmin(final MessageUtils messageUtils) {
+    public CallbackMainMenu(MessageUtils messageUtils) {
         this.messageUtils = messageUtils;
     }
 
     @Override
     public void execute(final AppUser appUser) {
-        final Long chatId = appUser.getTelegramUserId();
         final String output = "Добро пожаловать в панель администратора!";
         final List<InlineKeyboardButton> inlineKeyboardButtonList = createAdminButtons();
 
-        messageUtils.sendTextMessage(chatId, new Answer(output, inlineKeyboardButtonList));
+        messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
     }
 
     private List<InlineKeyboardButton> createAdminButtons() {

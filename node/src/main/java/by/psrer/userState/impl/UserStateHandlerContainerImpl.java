@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+import static by.psrer.entity.enums.UserState.ADD_ADMIN_SELECTION;
 import static by.psrer.entity.enums.UserState.AREA_SELECTION;
 import static by.psrer.entity.enums.UserState.DEPARTMENT_SELECTION;
 import static by.psrer.entity.enums.UserState.FIO_SELECTION;
+import static by.psrer.entity.enums.UserState.REMOVE_ADMIN_SELECTION;
 
 @Component
 @SuppressWarnings("unused")
@@ -21,11 +23,15 @@ public final class UserStateHandlerContainerImpl implements UserStateHandlerCont
     public UserStateHandlerContainerImpl(final UserStateHandlerBasic userStateHandlerBasic,
                                          final UserStateHandlerAreaSelection userStateHandlerAreaSelection,
                                          final UserStateHandlerDepartmentSelection userStateHandlerDepartmentSelection,
-                                         final UserStateFioSelection userStateFioSelection) {
+                                         final UserStateHandlerFioSelection userStateHandlerFioSelection,
+                                         final UserStateHandlerAddAdminSelection userStateHandlerAddAdminSelection,
+                                         final UserStateHandlerRemoveAdminSelection userStateHandlerRemoveAdminSelection) {
         userStateHandlerMap = new HashMap<>();
         userStateHandlerMap.put(AREA_SELECTION, userStateHandlerAreaSelection);
         userStateHandlerMap.put(DEPARTMENT_SELECTION, userStateHandlerDepartmentSelection);
-        userStateHandlerMap.put(FIO_SELECTION, userStateFioSelection);
+        userStateHandlerMap.put(FIO_SELECTION, userStateHandlerFioSelection);
+        userStateHandlerMap.put(ADD_ADMIN_SELECTION, userStateHandlerAddAdminSelection);
+        userStateHandlerMap.put(REMOVE_ADMIN_SELECTION, userStateHandlerRemoveAdminSelection);
 
         this.userStateHandlerBasic = userStateHandlerBasic;
     }
