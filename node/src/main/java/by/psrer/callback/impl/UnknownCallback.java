@@ -17,7 +17,6 @@ public final class UnknownCallback implements Callback {
 
     @Override
     public void execute(final AppUser appUser) {
-        final Long chatId = appUser.getTelegramUserId();
-        messageUtils.sendTextMessage(chatId, new Answer("Недоступно", null));
+        messageUtils.sendReplacedTextMessage(appUser, new Answer("Недоступно", null));
     }
 }

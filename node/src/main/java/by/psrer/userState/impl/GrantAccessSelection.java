@@ -13,13 +13,12 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import java.util.List;
 
-import static by.psrer.entity.enums.Role.USER;
 import static by.psrer.entity.enums.Status.ACTIVATED;
 import static by.psrer.entity.enums.UserState.BASIC;
 
 @Service
 @RequiredArgsConstructor
-public final class RemoveAdminSelection implements UserStateHandler {
+public final class GrantAccessSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
     private final AppUserDAO appUserDAO;
     private final AppUserConfigDAO appUserConfigDAO;
@@ -36,12 +35,11 @@ public final class RemoveAdminSelection implements UserStateHandler {
             if (selectedAppUser != null) {
                 final AppUserConfig appUserConfig = selectedAppUser.getAppUserConfigId();
 
-                if (appUserConfig.getRole() != USER) {
-                    final String notification = "Ваша роль сменилась на USER.";
-                    output = "Права администратора отозваны. Вы покинули режим выбора.";
+                if (appUserConfig.getStatus()!= ACTIVATED) {
+                    final String notification = "Вам выдан доступ к боту.";
+                    output = "Доступ пользователю выдан. Вы покинули режим выбора.";
 
                     appUserConfig.setStatus(ACTIVATED);
-                    appUserConfig.setRole(USER);
                     appUserConfigDAO.save(appUserConfig);
 
                     messageUtils.changeUserState(appUser, BASIC);
@@ -49,7 +47,7 @@ public final class RemoveAdminSelection implements UserStateHandler {
                     messageUtils.sendTextMessage(selectedAppUserId, new Answer(notification, null));
                 } else {
                     output = ("""
-                    Пользователь уже является пользователем. Введите заново или покиньте режим выбора.
+                    У пользователя уже есть доступ. Введите заново или покиньте режим выбора.
                     """);
                     inlineKeyboardButtonList = messageUtils.createCancelCommand();
                 }
