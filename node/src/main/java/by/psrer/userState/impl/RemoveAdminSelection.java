@@ -19,7 +19,7 @@ import static by.psrer.entity.enums.UserState.BASIC;
 
 @Service
 @RequiredArgsConstructor
-public class UserStateHandlerRemoveAdminSelection implements UserStateHandler {
+public final class RemoveAdminSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
     private final AppUserDAO appUserDAO;
     private final AppUserConfigDAO appUserConfigDAO;

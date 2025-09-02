@@ -14,7 +14,7 @@ import static by.psrer.entity.enums.Role.ADMIN;
 
 @Component
 @SuppressWarnings("unused")
-public class CommandFactoryImpl implements CommandFactory {
+public final  class CommandFactoryImpl implements CommandFactory {
     private final List<CommandContainer> containers;
 
     public CommandFactoryImpl(final AdminCommandContainerImpl adminCommandContainer,

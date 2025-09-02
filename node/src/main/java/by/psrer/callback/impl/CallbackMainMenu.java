@@ -20,7 +20,9 @@ public final class CallbackMainMenu implements Callback {
 
     @Override
     public void execute(final AppUser appUser) {
-        final String output = "Добро пожаловать в панель администратора!";
+        String output = "Добро пожаловать в панель администратора " + appUser.getFirstName() + " " +
+                appUser.getLastName() + " !" + "\n\n" + "Ваш username: @" + appUser.getUsername() +
+                "\nВаш телеграм ID: " + appUser.getTelegramUserId();
         final List<InlineKeyboardButton> inlineKeyboardButtonList = createAdminButtons();
 
         messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));

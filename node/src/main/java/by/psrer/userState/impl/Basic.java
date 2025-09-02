@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public final class UserStateHandlerBasic implements UserStateHandler {
+public final class Basic implements UserStateHandler {
     private final static String NOT_A_COMMAND_TEXT = "Введенный вами текст не является командой.";
     private final static String UNKNOWN_COMMAND_TEXT = "Такой команды не существует.";
     private final MessageUtils messageUtils;
     private final CommandFactory commandFactory;
 
-    public UserStateHandlerBasic(final MessageUtils messageUtils, final CommandFactory commandFactory) {
+    public Basic(final MessageUtils messageUtils, final CommandFactory commandFactory) {
         this.messageUtils = messageUtils;
         this.commandFactory = commandFactory;
     }

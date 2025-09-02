@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CommandAdmin implements Command {
+public final class CommandAdmin implements Command {
     private final MessageUtils messageUtils;
 
     public CommandAdmin(final MessageUtils messageUtils) {
@@ -21,7 +21,9 @@ public class CommandAdmin implements Command {
     @Override
     public void execute(final AppUser appUser) {
         final Long chatId = appUser.getTelegramUserId();
-        final String output = "Добро пожаловать в панель администратора!";
+        String output = "Добро пожаловать в панель администратора " + appUser.getFirstName() + " " +
+                appUser.getLastName() + " !" + "\n\n" + "Ваш username: @" + appUser.getUsername() +
+                "\nВаш телеграм ID: " + chatId;
         final List<InlineKeyboardButton> inlineKeyboardButtonList = createAdminButtons();
 
         messageUtils.sendTextMessage(chatId, new Answer(output, inlineKeyboardButtonList));

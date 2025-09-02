@@ -18,26 +18,24 @@ import static by.psrer.entity.enums.UserState.REMOVE_ADMIN_SELECTION;
 @SuppressWarnings("unused")
 public final class UserStateHandlerContainerImpl implements UserStateHandlerContainer {
     private final Map<UserState, UserStateHandler> userStateHandlerMap;
-    private final UserStateHandlerBasic userStateHandlerBasic;
+    private final Basic basic;
 
-    public UserStateHandlerContainerImpl(final UserStateHandlerBasic userStateHandlerBasic,
-                                         final UserStateHandlerAreaSelection userStateHandlerAreaSelection,
-                                         final UserStateHandlerDepartmentSelection userStateHandlerDepartmentSelection,
-                                         final UserStateHandlerFioSelection userStateHandlerFioSelection,
-                                         final UserStateHandlerAddAdminSelection userStateHandlerAddAdminSelection,
-                                         final UserStateHandlerRemoveAdminSelection userStateHandlerRemoveAdminSelection) {
+    public UserStateHandlerContainerImpl(final Basic basic, final AreaSelection areaSelection,
+                                         final DepartmentSelection departmentSelection, final FioSelection fioSelection,
+                                         final AddAdminSelection addAdminSelection,
+                                         final RemoveAdminSelection removeAdminSelection) {
         userStateHandlerMap = new HashMap<>();
-        userStateHandlerMap.put(AREA_SELECTION, userStateHandlerAreaSelection);
-        userStateHandlerMap.put(DEPARTMENT_SELECTION, userStateHandlerDepartmentSelection);
-        userStateHandlerMap.put(FIO_SELECTION, userStateHandlerFioSelection);
-        userStateHandlerMap.put(ADD_ADMIN_SELECTION, userStateHandlerAddAdminSelection);
-        userStateHandlerMap.put(REMOVE_ADMIN_SELECTION, userStateHandlerRemoveAdminSelection);
+        userStateHandlerMap.put(AREA_SELECTION, areaSelection);
+        userStateHandlerMap.put(DEPARTMENT_SELECTION, departmentSelection);
+        userStateHandlerMap.put(FIO_SELECTION, fioSelection);
+        userStateHandlerMap.put(ADD_ADMIN_SELECTION, addAdminSelection);
+        userStateHandlerMap.put(REMOVE_ADMIN_SELECTION, removeAdminSelection);
 
-        this.userStateHandlerBasic = userStateHandlerBasic;
+        this.basic = basic;
     }
 
     @Override
     public UserStateHandler retrieveUserStateHandler(final UserState userState) {
-        return userStateHandlerMap.getOrDefault(userState, userStateHandlerBasic);
+        return userStateHandlerMap.getOrDefault(userState, basic);
     }
 }
