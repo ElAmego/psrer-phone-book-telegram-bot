@@ -12,7 +12,7 @@ import java.util.List;
 import static by.psrer.entity.enums.UserState.REMOVE_ADMIN_SELECTION;
 
 @Service
-public class CallbackRemoveAdmin implements Callback {
+public final class CallbackRemoveAdmin implements Callback {
     private final MessageUtils messageUtils;
 
     public CallbackRemoveAdmin(final MessageUtils messageUtils) {

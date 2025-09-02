@@ -12,11 +12,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.List;
 
 @Service
-public final class UserStateHandlerFioSelection implements UserStateHandler {
+public final class FioSelection implements UserStateHandler {
     private final EmployeeDAO employeeDAO;
     private final MessageUtils messageUtils;
 
-    public UserStateHandlerFioSelection(final EmployeeDAO employeeDAO, final MessageUtils messageUtils) {
+    public FioSelection(final EmployeeDAO employeeDAO, final MessageUtils messageUtils) {
         this.employeeDAO = employeeDAO;
         this.messageUtils = messageUtils;
     }

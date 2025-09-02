@@ -1,10 +1,10 @@
 package by.psrer.userState.impl;
 
-import by.psrer.dao.AreaDAO;
 import by.psrer.dao.DepartmentDAO;
+import by.psrer.dao.EmployeeDAO;
 import by.psrer.entity.AppUser;
-import by.psrer.entity.Area;
 import by.psrer.entity.Department;
+import by.psrer.entity.Employee;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
@@ -16,14 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static by.psrer.entity.enums.UserState.BASIC;
-import static by.psrer.entity.enums.UserState.DEPARTMENT_SELECTION;
 
 @Service
 @RequiredArgsConstructor
-public final class UserStateHandlerAreaSelection implements UserStateHandler {
+public final class DepartmentSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
-    private final AreaDAO areaDAO;
     private final DepartmentDAO departmentDAO;
+    private final EmployeeDAO employeeDAO;
 
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
@@ -32,38 +31,37 @@ public final class UserStateHandlerAreaSelection implements UserStateHandler {
         List<InlineKeyboardButton> inlineKeyboardButtonList = messageUtils.createCancelCommand();
 
         if (textMessage.matches("[-+]?\\d+")) {
-            final int selectedAreaId = Integer.parseInt(textMessage);
-            final Optional<Area> selectedArea = areaDAO.findNthSafely(selectedAreaId);
+            final int selectedDepartmentId = Integer.parseInt(textMessage);
+            final Long intermediateValue = appUser.getAppUserConfigId().getIntermediateValue();
+            final Optional<Department> selectedDepartment = departmentDAO.findNthSafely(selectedDepartmentId,
+                    intermediateValue);
 
-            if (selectedArea.isPresent()) {
-                final Long areaId = selectedArea.get().getAreaId();
-                final List<Department> departmentList = departmentDAO.findByArea_AreaId(areaId);
+            if (selectedDepartment.isPresent()) {
+                final Long departmentId = selectedDepartment.get().getDepartmentId();
+                final List<Employee> employeeList = employeeDAO.findByDepartment_DepartmentId(departmentId);
 
-                if (!departmentList.isEmpty()) {
-                    output.append("""
-                    Вы перешли в режим выбора. Для выбора необходимого отдела отправьте соответствующую цифру. \
-                    Нажмите на кнопку "Покинуть режим выбора" чтобы выйти из режима выбора.
-                
-                    Список отделов:
-                    """);
+                if (!employeeList.isEmpty()) {
+                    output.append("Список номеров:");
 
                     int inc = 0;
 
-                    for (final Department departmentFromList: departmentList) {
-                        output.append(++inc).append(": ")
-                                .append(departmentFromList.getDepartmentName()).append("\n");
+                    for (final Employee employeeFromList: employeeList) {
+                        output.append("\n").append(++inc).append(": ").append(employeeFromList.getEmployeeName())
+                                .append("\n").append(employeeFromList.getJob().getJobName()).append(",\n")
+                                .append(employeeFromList.getPhoneNumber());
                     }
 
-                    messageUtils.changeUserStateWithIntermediateValue(appUser, DEPARTMENT_SELECTION, areaId);
+                    output.append("\n\nВы покинули режим выбора.");
                 } else {
-                    output.append("Список отделов текущего участка пуст. Вы вышли из режима выбора.");
-                    inlineKeyboardButtonList = null;
-                    messageUtils.changeUserState(appUser, BASIC);
+                    output.append("Список работников выбранного вами отдела пуст. Вы вышли из режима выбора.");
                 }
+
+                inlineKeyboardButtonList = null;
+                messageUtils.changeUserState(appUser, BASIC);
             } else {
                 output.append("""
                     В списке нет выбранного вами значения. Введите корректное значение или нажмите на кнопку \
-                    "Покинуть режим выбора"
+                    "Покинуть режим выбора".
                     """);
             }
         } else {
