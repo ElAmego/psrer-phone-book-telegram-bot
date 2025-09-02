@@ -12,7 +12,9 @@ import static by.psrer.entity.enums.UserState.ADD_ADMIN_SELECTION;
 import static by.psrer.entity.enums.UserState.AREA_SELECTION;
 import static by.psrer.entity.enums.UserState.DEPARTMENT_SELECTION;
 import static by.psrer.entity.enums.UserState.FIO_SELECTION;
+import static by.psrer.entity.enums.UserState.GRANT_ACCESS_SELECTION;
 import static by.psrer.entity.enums.UserState.REMOVE_ADMIN_SELECTION;
+import static by.psrer.entity.enums.UserState.REVOKE_ACCESS_SELECTION;
 
 @Component
 @SuppressWarnings("unused")
@@ -23,13 +25,17 @@ public final class UserStateHandlerContainerImpl implements UserStateHandlerCont
     public UserStateHandlerContainerImpl(final Basic basic, final AreaSelection areaSelection,
                                          final DepartmentSelection departmentSelection, final FioSelection fioSelection,
                                          final AddAdminSelection addAdminSelection,
-                                         final RemoveAdminSelection removeAdminSelection) {
+                                         final RemoveAdminSelection removeAdminSelection,
+                                         final GrantAccessSelection grantAccessSelection,
+                                         final RevokeAccessSelection revokeAccessSelection) {
         userStateHandlerMap = new HashMap<>();
         userStateHandlerMap.put(AREA_SELECTION, areaSelection);
         userStateHandlerMap.put(DEPARTMENT_SELECTION, departmentSelection);
         userStateHandlerMap.put(FIO_SELECTION, fioSelection);
         userStateHandlerMap.put(ADD_ADMIN_SELECTION, addAdminSelection);
         userStateHandlerMap.put(REMOVE_ADMIN_SELECTION, removeAdminSelection);
+        userStateHandlerMap.put(GRANT_ACCESS_SELECTION, grantAccessSelection);
+        userStateHandlerMap.put(REVOKE_ACCESS_SELECTION, revokeAccessSelection);
 
         this.basic = basic;
     }

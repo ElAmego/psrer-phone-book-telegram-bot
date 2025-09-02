@@ -37,13 +37,8 @@ public final class CommandAdmin implements Command {
                 .build());
 
         inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Выдать доступ")
-                .callbackData("grantBtn")
-                .build());
-
-        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Отозвать доступ")
-                .callbackData("revokeBtn")
+                .text("Доступ")
+                .callbackData("accessBtn")
                 .build());
 
         inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
