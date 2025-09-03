@@ -18,7 +18,7 @@ import static by.psrer.entity.enums.UserState.BASIC;
 
 @Service
 @RequiredArgsConstructor
-public class RevokeAccessSelection implements UserStateHandler {
+public final class RevokeAccessSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
     private final AppUserDAO appUserDAO;
     private final AppUserConfigDAO appUserConfigDAO;

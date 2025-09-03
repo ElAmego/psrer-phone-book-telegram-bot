@@ -1,6 +1,7 @@
 package by.psrer.callback.impl;
 
 import by.psrer.callback.Callback;
+import by.psrer.dao.AppUserDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
@@ -9,28 +10,50 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import java.util.List;
 
+import static by.psrer.entity.enums.Status.NOT_ACTIVATED;
 import static by.psrer.entity.enums.UserState.GRANT_ACCESS_SELECTION;
 
 @Service
 public final class CallbackGrantAccess implements Callback {
     private final MessageUtils messageUtils;
+    private final AppUserDAO appUserDAO;
 
-    public CallbackGrantAccess(final MessageUtils messageUtils) {
+    public CallbackGrantAccess(final MessageUtils messageUtils, final AppUserDAO appUserDAO) {
         this.messageUtils = messageUtils;
+        this.appUserDAO = appUserDAO;
     }
 
     @Override
     public void execute(final AppUser appUser) {
-        final String output = """
+        final List<AppUser> appUserList = appUserDAO.findByAppUserConfigIdStatus(NOT_ACTIVATED);
+        final StringBuilder output = new StringBuilder();
+        List<InlineKeyboardButton> inlineKeyboardButtonList = null;
+
+        if (!appUserList.isEmpty()) {
+            int inc = 0;
+            output.append("""
                 Вы перешли в режим выбора. Введите телеграм ID пользователя которому хотите выдать доступ, например: \
-                13432334
+                13432334.
                 
-                Нажмите на кнопку "Покинуть режима выбора" чтобы выйти из режима выбора.
-                """;
+                Список пользователей без доступа:
+                """);
 
-        final List<InlineKeyboardButton> cancelBtn = messageUtils.createCancelCommand();
+            for (final AppUser appUserFromList: appUserList) {
+                output.append("\n").append(++inc).append(": ").append(appUserFromList.getFirstName()).append(" ")
+                        .append(appUserFromList.getLastName()).append(", ").append("@")
+                        .append(appUserFromList.getUsername()).append("\nТелеграм ID: ")
+                        .append(appUserFromList.getTelegramUserId());
+            }
 
-        messageUtils.changeUserState(appUser, GRANT_ACCESS_SELECTION);
-        messageUtils.sendReplacedTextMessage(appUser, new Answer(output, cancelBtn));
+            output.append("\n\nНажмите на кнопку \"Покинуть режима выбора\" чтобы выйти из режима выбора.");
+
+            inlineKeyboardButtonList = messageUtils.createCancelCommand();
+
+            messageUtils.changeUserState(appUser, GRANT_ACCESS_SELECTION);
+        } else {
+            output.append("Список не активированных пользователей пуст.");
+        }
+
+        messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(), inlineKeyboardButtonList));
     }
 }
