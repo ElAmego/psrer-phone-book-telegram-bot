@@ -42,8 +42,8 @@ public final class CommandAdmin implements Command {
                 .build());
 
         inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Добавление данных")
-                .callbackData("addDataBtn")
+                .text("Управление данными")
+                .callbackData("dataManagementBtn")
                 .build());
 
         return inlineKeyboardButtonList;
