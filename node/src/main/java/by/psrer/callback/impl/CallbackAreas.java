@@ -56,7 +56,7 @@ public final class CallbackAreas implements Callback {
     private InlineKeyboardButton createDeleteAreaBtn() {
         return InlineKeyboardButton.builder()
                 .text("Удалить участок")
-                .callbackData("deleteAreaBtn")
+                .callbackData("removeAreaBtn")
                 .build();
     }
 
