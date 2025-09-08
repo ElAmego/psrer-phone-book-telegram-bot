@@ -152,28 +152,6 @@ public final class MessageUtilsImpl implements MessageUtils {
     }
 
     @Override
-    public List<InlineKeyboardButton> createHelpCommand() {
-        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Список команд")
-                .callbackData("helpBtn")
-                .build());
-
-        return inlineKeyboardButtonList;
-    }
-
-    @Override
-    public List<InlineKeyboardButton> createCancelCommand() {
-        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Покинуть режим выбора")
-                .callbackData("cancelBtn")
-                .build());
-
-        return inlineKeyboardButtonList;
-    }
-
-    @Override
     public void changeUserState(final AppUser appUser, final UserState userState) {
         final AppUserConfig appUserConfig = appUser.getAppUserConfigId();
         appUserConfig.setUserState(userState);

@@ -5,7 +5,9 @@ import by.psrer.dao.AreaDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.entity.Area;
 import by.psrer.utils.Answer;
+import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -13,14 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public final class CallbackAreas implements Callback {
     private final MessageUtils messageUtils;
+    private final ButtonFactory buttonFactory;
     private final AreaDAO areaDAO;
-
-    public CallbackAreas(final MessageUtils messageUtils, final AreaDAO areaDAO) {
-        this.messageUtils = messageUtils;
-        this.areaDAO = areaDAO;
-    }
 
     @Override
     public void execute(final AppUser appUser) {
@@ -36,34 +35,13 @@ public final class CallbackAreas implements Callback {
                 output.append("\n").append(++inc).append(": ").append(area.getAreaName());
             }
 
-            inlineKeyboardButtonList.add(createDeleteAreaBtn());
+            inlineKeyboardButtonList.add(buttonFactory.removeArea());
         } else {
             output.append("Список участков в базе данных пуст.");
         }
 
-        inlineKeyboardButtonList.add(createAddAreaBtn());
-        inlineKeyboardButtonList.add(createDataManagementBtn());
+        inlineKeyboardButtonList.add(buttonFactory.addArea());
+        inlineKeyboardButtonList.add(buttonFactory.dataManagement());
         messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(), inlineKeyboardButtonList));
-    }
-
-    private InlineKeyboardButton createAddAreaBtn() {
-        return InlineKeyboardButton.builder()
-                .text("Добавить участок")
-                .callbackData("addAreaBtn")
-                .build();
-    }
-
-    private InlineKeyboardButton createDeleteAreaBtn() {
-        return InlineKeyboardButton.builder()
-                .text("Удалить участок")
-                .callbackData("removeAreaBtn")
-                .build();
-    }
-
-    private InlineKeyboardButton createDataManagementBtn() {
-        return InlineKeyboardButton.builder()
-                .text("Назад")
-                .callbackData("dataManagementBtn")
-                .build();
     }
 }

@@ -4,7 +4,9 @@ import by.psrer.callback.Callback;
 import by.psrer.dao.AppUserDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.utils.Answer;
+import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -14,20 +16,17 @@ import java.util.List;
 import static by.psrer.entity.enums.Status.ACTIVATED;
 
 @Service
+@RequiredArgsConstructor
 public final class CallbackAccess implements Callback {
     private final MessageUtils messageUtils;
     private final AppUserDAO appUserDAO;
-
-    public CallbackAccess(final MessageUtils messageUtils, final AppUserDAO appUserDAO) {
-        this.messageUtils = messageUtils;
-        this.appUserDAO = appUserDAO;
-    }
+    private final ButtonFactory buttonFactory;
 
     @Override
     public void execute(final AppUser appUser) {
         final StringBuilder output = new StringBuilder("Список пользователей с выданным доступом: ");
         final List<AppUser> appUserList = appUserDAO.findByAppUserConfigIdStatus(ACTIVATED);
-        final List<InlineKeyboardButton> inlineKeyboardButtonList = createAdminsButtons();
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = createAccessButtons();
 
         if (!appUserList.isEmpty()) {
             int inc = 0;
@@ -42,23 +41,11 @@ public final class CallbackAccess implements Callback {
                 inlineKeyboardButtonList));
     }
 
-    private List<InlineKeyboardButton> createAdminsButtons() {
+    private List<InlineKeyboardButton> createAccessButtons() {
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Выдать доступ")
-                .callbackData("grantAccessBtn")
-                .build());
-
-        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Отозвать доступ")
-                .callbackData("revokeAccessBtn")
-                .build());
-
-        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Главное меню")
-                .callbackData("mainMenuBtn")
-                .build());
-
+        inlineKeyboardButtonList.add(buttonFactory.grantAccess());
+        inlineKeyboardButtonList.add(buttonFactory.revokeAccess());
+        inlineKeyboardButtonList.add(buttonFactory.mainMenu());
         return inlineKeyboardButtonList;
     }
 }

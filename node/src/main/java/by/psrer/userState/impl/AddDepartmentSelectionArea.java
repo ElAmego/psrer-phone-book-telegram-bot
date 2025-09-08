@@ -7,11 +7,13 @@ import by.psrer.entity.AppUserConfig;
 import by.psrer.entity.Area;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
+import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,13 +23,14 @@ import static by.psrer.entity.enums.UserState.ADD_DEPARTMENT_SELECTION_DEPARTMEN
 @RequiredArgsConstructor
 public final class AddDepartmentSelectionArea implements UserStateHandler {
     private final MessageUtils messageUtils;
+    private final ButtonFactory buttonFactory;
     private final AreaDAO areaDAO;
     private final AppUserConfigDAO appUserConfigDAO;
 
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
         String output;
-        final List<InlineKeyboardButton> inlineKeyboardButtonList = messageUtils.createCancelCommand();
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
 
         if (textMessage.matches("[-+]?\\d+")) {
             final int selectedAreaId = Integer.parseInt(textMessage);
@@ -52,6 +55,7 @@ public final class AddDepartmentSelectionArea implements UserStateHandler {
                     "выбора.";
         }
 
+        inlineKeyboardButtonList.add(buttonFactory.cancel());
         messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
     }
 }

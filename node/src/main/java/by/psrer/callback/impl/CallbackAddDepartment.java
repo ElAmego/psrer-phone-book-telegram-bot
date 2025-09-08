@@ -5,28 +5,28 @@ import by.psrer.dao.AreaDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.entity.Area;
 import by.psrer.utils.Answer;
+import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static by.psrer.entity.enums.UserState.ADD_DEPARTMENT_SELECTION_AREA;
 
 @Service
+@RequiredArgsConstructor
 public final class CallbackAddDepartment implements Callback {
     private final MessageUtils messageUtils;
+    private final ButtonFactory buttonFactory;
     private final AreaDAO areaDAO;
-
-    public CallbackAddDepartment(final MessageUtils messageUtils, final AreaDAO areaDAO) {
-        this.messageUtils = messageUtils;
-        this.areaDAO = areaDAO;
-    }
 
     @Override
     public void execute(final AppUser appUser) {
         final StringBuilder output = new StringBuilder();
-        List<InlineKeyboardButton> inlineKeyboardButtonList = null;
+        List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
         final List<Area> areaList = areaDAO.findAllByOrderByAreaIdAsc();
 
         if (!areaList.isEmpty()) {
@@ -38,7 +38,7 @@ public final class CallbackAddDepartment implements Callback {
             }
 
             messageUtils.changeUserState(appUser, ADD_DEPARTMENT_SELECTION_AREA);
-            inlineKeyboardButtonList = messageUtils.createCancelCommand();
+            inlineKeyboardButtonList.add(buttonFactory.cancel());
         } else {
             output.append("В базе данных отсутствуют участки. Добавьте сначала участок, а затем отдел.");
         }

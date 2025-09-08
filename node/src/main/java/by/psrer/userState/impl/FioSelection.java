@@ -5,27 +5,27 @@ import by.psrer.entity.AppUser;
 import by.psrer.entity.Employee;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
+import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public final class FioSelection implements UserStateHandler {
     private final EmployeeDAO employeeDAO;
     private final MessageUtils messageUtils;
-
-    public FioSelection(final EmployeeDAO employeeDAO, final MessageUtils messageUtils) {
-        this.employeeDAO = employeeDAO;
-        this.messageUtils = messageUtils;
-    }
+    private final ButtonFactory buttonFactory;
 
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
         final StringBuilder output = new StringBuilder();
         final Long chatId = appUser.getTelegramUserId();
-        final List<InlineKeyboardButton> inlineKeyboardButtonList = messageUtils.createCancelCommand();
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
         final List<Employee> employeeList = employeeDAO.
                 findByEmployeeNameContainingIgnoreCaseOrderByEmployeeNameAsc(textMessage);
 
@@ -48,6 +48,7 @@ public final class FioSelection implements UserStateHandler {
                 Введите новую подстроку или нажмите на кнопку "Покинуть режим выбора" чтобы выйти из \
                 режима выбора.
                 """);
+        inlineKeyboardButtonList.add(buttonFactory.cancel());
         messageUtils.sendTextMessage(chatId, new Answer(output.toString(), inlineKeyboardButtonList));
     }
 }

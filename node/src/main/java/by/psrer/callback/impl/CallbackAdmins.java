@@ -4,7 +4,9 @@ import by.psrer.callback.Callback;
 import by.psrer.dao.AppUserDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.utils.Answer;
+import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -14,15 +16,12 @@ import java.util.List;
 import static by.psrer.entity.enums.Role.ADMIN;
 
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings("unused")
 public final class CallbackAdmins implements Callback {
     private final MessageUtils messageUtils;
+    private final ButtonFactory buttonFactory;
     private final AppUserDAO appUserDAO;
-
-    public CallbackAdmins(final MessageUtils messageUtils, final AppUserDAO appUserDAO) {
-        this.messageUtils = messageUtils;
-        this.appUserDAO = appUserDAO;
-    }
 
     @Override
     public void execute(final AppUser appUser) {
@@ -46,21 +45,9 @@ public final class CallbackAdmins implements Callback {
 
     private List<InlineKeyboardButton> createAdminsButtons() {
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Добавить")
-                .callbackData("addAdminBtn")
-                .build());
-
-        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Убрать")
-                .callbackData("removeAdminBtn")
-                .build());
-
-        inlineKeyboardButtonList.add(InlineKeyboardButton.builder()
-                .text("Главное меню")
-                .callbackData("mainMenuBtn")
-                .build());
-
+        inlineKeyboardButtonList.add(buttonFactory.addAdmin());
+        inlineKeyboardButtonList.add(buttonFactory.removeAdmin());
+        inlineKeyboardButtonList.add(buttonFactory.mainMenu());
         return inlineKeyboardButtonList;
     }
 }

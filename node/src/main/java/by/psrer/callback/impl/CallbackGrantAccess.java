@@ -4,30 +4,30 @@ import by.psrer.callback.Callback;
 import by.psrer.dao.AppUserDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.utils.Answer;
+import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static by.psrer.entity.enums.Status.NOT_ACTIVATED;
 import static by.psrer.entity.enums.UserState.GRANT_ACCESS_SELECTION;
 
 @Service
+@RequiredArgsConstructor
 public final class CallbackGrantAccess implements Callback {
     private final MessageUtils messageUtils;
+    private final ButtonFactory buttonFactory;
     private final AppUserDAO appUserDAO;
-
-    public CallbackGrantAccess(final MessageUtils messageUtils, final AppUserDAO appUserDAO) {
-        this.messageUtils = messageUtils;
-        this.appUserDAO = appUserDAO;
-    }
 
     @Override
     public void execute(final AppUser appUser) {
         final List<AppUser> appUserList = appUserDAO.findByAppUserConfigIdStatus(NOT_ACTIVATED);
         final StringBuilder output = new StringBuilder();
-        List<InlineKeyboardButton> inlineKeyboardButtonList = null;
+        List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
 
         if (!appUserList.isEmpty()) {
             int inc = 0;
@@ -47,7 +47,7 @@ public final class CallbackGrantAccess implements Callback {
 
             output.append("\n\nНажмите на кнопку \"Покинуть режима выбора\" чтобы выйти из режима выбора.");
 
-            inlineKeyboardButtonList = messageUtils.createCancelCommand();
+            inlineKeyboardButtonList.add(buttonFactory.cancel());
 
             messageUtils.changeUserState(appUser, GRANT_ACCESS_SELECTION);
         } else {
