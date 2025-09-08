@@ -7,11 +7,13 @@ import by.psrer.entity.Department;
 import by.psrer.entity.Employee;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
+import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +23,7 @@ import static by.psrer.entity.enums.UserState.BASIC;
 @RequiredArgsConstructor
 public final class DepartmentSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
+    private final ButtonFactory buttonFactory;
     private final DepartmentDAO departmentDAO;
     private final EmployeeDAO employeeDAO;
 
@@ -28,7 +31,7 @@ public final class DepartmentSelection implements UserStateHandler {
     public void execute(final AppUser appUser, final String textMessage) {
         final Long chatId = appUser.getTelegramUserId();
         final StringBuilder output = new StringBuilder();
-        List<InlineKeyboardButton> inlineKeyboardButtonList = messageUtils.createCancelCommand();
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
 
         if (textMessage.matches("[-+]?\\d+")) {
             final int selectedDepartmentId = Integer.parseInt(textMessage);
@@ -56,19 +59,20 @@ public final class DepartmentSelection implements UserStateHandler {
                     output.append("Список работников выбранного вами отдела пуст. Вы вышли из режима выбора.");
                 }
 
-                inlineKeyboardButtonList = null;
                 messageUtils.changeUserState(appUser, BASIC);
             } else {
                 output.append("""
                     В списке нет выбранного вами значения. Введите корректное значение или нажмите на кнопку \
                     "Покинуть режим выбора".
                     """);
+                inlineKeyboardButtonList.add(buttonFactory.cancel());
             }
         } else {
             output.append("""
                     Введенное вами значение не является цифрой. Введите корректное значение или нажмите на кнопку \
                     "Покинуть режим выбора".
                     """);
+            inlineKeyboardButtonList.add(buttonFactory.cancel());
         }
 
         messageUtils.sendTextMessage(chatId, new Answer(output.toString(), inlineKeyboardButtonList));

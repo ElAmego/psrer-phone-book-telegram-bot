@@ -7,11 +7,13 @@ import by.psrer.entity.Area;
 import by.psrer.entity.Department;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
+import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,7 @@ import static by.psrer.entity.enums.UserState.DEPARTMENT_SELECTION;
 @RequiredArgsConstructor
 public final class AreaSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
+    private final ButtonFactory buttonFactory;
     private final AreaDAO areaDAO;
     private final DepartmentDAO departmentDAO;
 
@@ -29,7 +32,7 @@ public final class AreaSelection implements UserStateHandler {
     public void execute(final AppUser appUser, final String textMessage) {
         final Long chatId = appUser.getTelegramUserId();
         final StringBuilder output = new StringBuilder();
-        List<InlineKeyboardButton> inlineKeyboardButtonList = messageUtils.createCancelCommand();
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
 
         if (textMessage.matches("[-+]?\\d+")) {
             final int selectedAreaId = Integer.parseInt(textMessage);
@@ -57,7 +60,6 @@ public final class AreaSelection implements UserStateHandler {
                     messageUtils.changeUserStateWithIntermediateValue(appUser, DEPARTMENT_SELECTION, areaId);
                 } else {
                     output.append("Список отделов текущего участка пуст. Вы вышли из режима выбора.");
-                    inlineKeyboardButtonList = null;
                     messageUtils.changeUserState(appUser, BASIC);
                 }
             } else {
@@ -73,6 +75,7 @@ public final class AreaSelection implements UserStateHandler {
                     """);
         }
 
+        inlineKeyboardButtonList.add(buttonFactory.cancel());
         messageUtils.sendTextMessage(chatId, new Answer(output.toString(), inlineKeyboardButtonList));
     }
 }

@@ -6,11 +6,13 @@ import by.psrer.entity.AppUser;
 import by.psrer.entity.AppUserConfig;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
+import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static by.psrer.entity.enums.Role.USER;
@@ -21,12 +23,13 @@ import static by.psrer.entity.enums.UserState.BASIC;
 @RequiredArgsConstructor
 public final class RemoveAdminSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
+    private final ButtonFactory buttonFactory;
     private final AppUserDAO appUserDAO;
     private final AppUserConfigDAO appUserConfigDAO;
 
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
-        List<InlineKeyboardButton> inlineKeyboardButtonList = null;
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
         String output;
 
         if (textMessage.matches("[-+]?\\d+")) {
@@ -45,19 +48,19 @@ public final class RemoveAdminSelection implements UserStateHandler {
                     appUserConfigDAO.save(appUserConfig);
 
                     messageUtils.changeUserState(appUser, BASIC);
-                    messageUtils.sendReplacedTextMessage(appUser, new Answer(output, null));
+                    messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
                     messageUtils.sendTextMessage(selectedAppUserId, new Answer(notification, null));
                 } else {
                     output = ("""
                     Пользователь уже является пользователем. Введите заново или покиньте режим выбора.
                     """);
-                    inlineKeyboardButtonList = messageUtils.createCancelCommand();
+                    inlineKeyboardButtonList.add(buttonFactory.cancel());
                 }
             } else {
                 output = ("""
                     Пользователя с таким id нет в базе данных. Введите заново или покиньте режим выбора.
                     """);
-                inlineKeyboardButtonList = messageUtils.createCancelCommand();
+                inlineKeyboardButtonList.add(buttonFactory.cancel());
             }
 
         } else {
@@ -65,7 +68,7 @@ public final class RemoveAdminSelection implements UserStateHandler {
                     Вы ввели недопустимое значение! Телеграм ID состоит только из цифр. Введите заново или покиньте \
                     режим выбора.
                     """);
-            inlineKeyboardButtonList = messageUtils.createCancelCommand();
+            inlineKeyboardButtonList.add(buttonFactory.cancel());
         }
 
         messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
