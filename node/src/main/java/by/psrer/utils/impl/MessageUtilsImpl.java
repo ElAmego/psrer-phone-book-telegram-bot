@@ -19,6 +19,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static by.psrer.entity.enums.Role.USER;
@@ -131,6 +132,7 @@ public final class MessageUtilsImpl implements MessageUtils {
                     .role(USER)
                     .userState(BASIC)
                     .status(NOT_ACTIVATED)
+                    .intermediateData(new HashMap<>())
                     .build();
 
             appUserConfig = appUserConfigDAO.save(appUserConfig);

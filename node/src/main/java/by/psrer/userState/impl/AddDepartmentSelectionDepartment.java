@@ -1,11 +1,14 @@
 package by.psrer.userState.impl;
 
 import by.psrer.dao.AreaDAO;
+import by.psrer.dao.DepartmentDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.entity.Area;
+import by.psrer.entity.Department;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -14,15 +17,12 @@ import java.util.List;
 import static by.psrer.entity.enums.UserState.BASIC;
 
 @Service
-public final class AddAreaSelection implements UserStateHandler {
+@RequiredArgsConstructor
+public final class AddDepartmentSelectionDepartment implements UserStateHandler {
     private final static int TEXT_MESSAGE_LIMIT = 255;
     private final MessageUtils messageUtils;
+    private final DepartmentDAO departmentDAO;
     private final AreaDAO areaDAO;
-
-    public AddAreaSelection(final MessageUtils messageUtils, final AreaDAO areaDAO) {
-        this.messageUtils = messageUtils;
-        this.areaDAO = areaDAO;
-    }
 
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
@@ -30,15 +30,18 @@ public final class AddAreaSelection implements UserStateHandler {
         List<InlineKeyboardButton> inlineKeyboardButtonList = null;
 
         if (textMessage.length() <= TEXT_MESSAGE_LIMIT) {
-            final Area selectedArea = areaDAO.findByAreaName(textMessage);
+            final Department selectedDepartment = departmentDAO.findByDepartmentName(textMessage);
 
-            if (selectedArea == null) {
-                output = "Участок \"" + textMessage + "\" успешно добавлен в базу данных.";
-                final Area newArea = Area.builder()
-                        .areaName(textMessage)
+            if (selectedDepartment == null) {
+                var areaId = appUser.getAppUserConfigId().getIntermediateData().get("areaId");
+                final Area area = areaDAO.findByAreaId((Integer) areaId);
+                output = "Отдел \"" + textMessage + "\" успешно добавлен в базу данных.";
+                final Department newDepartment = Department.builder()
+                        .departmentName(textMessage)
+                        .area(area)
                         .build();
 
-                areaDAO.save(newArea);
+                departmentDAO.save(newDepartment);
                 messageUtils.changeUserState(appUser, BASIC);
             } else {
                 output = "Такая запись уже есть в базе данных. Введите заново или покиньте режим выбора.";

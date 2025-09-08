@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface AreaDAO extends JpaRepository<Area, Long> {
     List<Area> findAllByOrderByAreaIdAsc();
     Area findByAreaName(final String areaName);
+    Area findByAreaId(final Integer areaId);
 
     @Query(value = "SELECT * FROM area ORDER BY area_id LIMIT 1 OFFSET :offset", nativeQuery = true)
     Area findNth(@Param("offset") final int offset);
