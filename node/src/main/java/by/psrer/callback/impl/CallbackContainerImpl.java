@@ -20,7 +20,10 @@ public final class CallbackContainerImpl implements CallbackContainer {
                                  final CallbackGrantAccess callbackGrantAccess, final CallbackAreas callbackAreas,
                                  final CallbackRevokeAccess callbackRevokeAccess, final CallbackAddArea callbackAddArea,
                                  final CallbackDataManagement callbackDataManagement,
-                                 final CallbackRemoveArea callbackRemoveArea) {
+                                 final CallbackRemoveArea callbackRemoveArea,
+                                 final CallbackDepartments callbackDepartments,
+                                 final CallbackAddDepartment callbackAddDepartment,
+                                 final CallbackRemoveDepartment callbackRemoveDepartment) {
         this.unknownCallback = unknownCallback;
         callbackMap = new HashMap<>();
         callbackMap.put("helpBtn", callbackHelp);
@@ -36,6 +39,9 @@ public final class CallbackContainerImpl implements CallbackContainer {
         callbackMap.put("areasBtn", callbackAreas);
         callbackMap.put("addAreaBtn", callbackAddArea);
         callbackMap.put("removeAreaBtn", callbackRemoveArea);
+        callbackMap.put("departmentsBtn", callbackDepartments);
+        callbackMap.put("addDepartmentBtn", callbackAddDepartment);
+        callbackMap.put("removeDepartmentBtn", callbackRemoveDepartment);
     }
 
     @Override

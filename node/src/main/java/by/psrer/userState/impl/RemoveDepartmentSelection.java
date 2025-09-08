@@ -1,8 +1,8 @@
 package by.psrer.userState.impl;
 
-import by.psrer.dao.AreaDAO;
+import by.psrer.dao.DepartmentDAO;
 import by.psrer.entity.AppUser;
-import by.psrer.entity.Area;
+import by.psrer.entity.Department;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
 import by.psrer.utils.MessageUtils;
@@ -15,13 +15,13 @@ import java.util.Optional;
 import static by.psrer.entity.enums.UserState.BASIC;
 
 @Service
-public final class RemoveAreaSelection implements UserStateHandler {
+public final class RemoveDepartmentSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
-    private final AreaDAO areaDAO;
+    private final DepartmentDAO departmentDAO;
 
-    public RemoveAreaSelection(final MessageUtils messageUtils, final AreaDAO areaDAO) {
+    public RemoveDepartmentSelection(final MessageUtils messageUtils, final  DepartmentDAO departmentDAO) {
         this.messageUtils = messageUtils;
-        this.areaDAO = areaDAO;
+        this.departmentDAO = departmentDAO;
     }
 
     @Override
@@ -30,15 +30,15 @@ public final class RemoveAreaSelection implements UserStateHandler {
         List<InlineKeyboardButton> inlineKeyboardButtonList = null;
 
         if (textMessage.matches("[-+]?\\d+")) {
-            final int selectedAreaId = Integer.parseInt(textMessage);
-            final Optional<Area> selectedArea = areaDAO.findNthSafely(selectedAreaId);
+            final int selectedDepartmentId = Integer.parseInt(textMessage);
+            final Optional<Department> selectedDepartment = departmentDAO.findNthSafely(selectedDepartmentId);
 
-            if (selectedArea.isPresent()) {
-                final Area area = selectedArea.get();
-                final Long areaId = area.getAreaId();
+            if (selectedDepartment.isPresent()) {
+                final Department department = selectedDepartment.get();
+                final Long departmentId = department.getDepartmentId();
 
-                areaDAO.deleteAreaByAreaId(areaId);
-                output = "Участок \"" + area.getAreaName() + "\" успешно удален из базы данных.";
+                departmentDAO.deleteDepartmentByDepartmentId(departmentId);
+                output = "Отдел \"" + department.getDepartmentName() + "\" успешно удален из базы данных.";
                 messageUtils.changeUserState(appUser, BASIC);
             } else {
                 output = "В списке нет выбранного вами значения. Введите корректное значение или покиньте режим выбора.";
