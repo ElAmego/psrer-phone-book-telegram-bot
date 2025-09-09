@@ -74,7 +74,17 @@ public final class MessageUtilsImpl implements MessageUtils {
 
     @Override
     public void sendReplacedTextMessage(final AppUser appUser, final Answer answer) {
+        final int sendMessageLength = answer.answerText().length();
         final Long chatId = appUser.getTelegramUserId();
+
+        if (sendMessageLength > TELEGRAM_MESSAGE_LIMIT) {
+            final List<Answer> answers = splitAnswer(answer);
+            for (final Answer answerFromList : answers) {
+                sendTextMessage(chatId, answerFromList);
+            }
+
+            return;
+        }
         final String text = answer.answerText();
         final Integer messageId = appUser.getAppUserConfigId().getLastBotMessageId();
 
