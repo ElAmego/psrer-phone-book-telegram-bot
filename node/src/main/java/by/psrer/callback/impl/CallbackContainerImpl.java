@@ -19,9 +19,9 @@ public final class CallbackContainerImpl implements CallbackContainer {
                                  final CallbackRemoveAdmin callbackRemoveAdmin, final CallbackAccess callbackAccess,
                                  final CallbackGrantAccess callbackGrantAccess, final CallbackAreas callbackAreas,
                                  final CallbackRevokeAccess callbackRevokeAccess, final CallbackAddArea callbackAddArea,
-                                 final CallbackDataManagement callbackDataManagement,
-                                 final CallbackRemoveArea callbackRemoveArea,
-                                 final CallbackDepartments callbackDepartments,
+                                 final CallbackDataManagement callbackDataManagement, final CallbackJobs callbackJobs,
+                                 final CallbackRemoveArea callbackRemoveArea, final CallbackAddJob callbackAddJob,
+                                 final CallbackDepartments callbackDepartments, final CallbackRemoveJob callbackRemoveJob,
                                  final CallbackAddDepartment callbackAddDepartment,
                                  final CallbackRemoveDepartment callbackRemoveDepartment) {
         this.unknownCallback = unknownCallback;
@@ -42,6 +42,9 @@ public final class CallbackContainerImpl implements CallbackContainer {
         callbackMap.put("departmentsBtn", callbackDepartments);
         callbackMap.put("addDepartmentBtn", callbackAddDepartment);
         callbackMap.put("removeDepartmentBtn", callbackRemoveDepartment);
+        callbackMap.put("jobsBtn", callbackJobs);
+        callbackMap.put("addJobBtn", callbackAddJob);
+        callbackMap.put("removeJobBtn", callbackRemoveJob);
     }
 
     @Override

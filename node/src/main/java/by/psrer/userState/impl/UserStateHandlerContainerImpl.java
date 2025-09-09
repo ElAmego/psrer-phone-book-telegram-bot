@@ -12,6 +12,7 @@ import static by.psrer.entity.enums.UserState.ADD_ADMIN_SELECTION;
 import static by.psrer.entity.enums.UserState.ADD_AREA_SELECTION;
 import static by.psrer.entity.enums.UserState.ADD_DEPARTMENT_SELECTION_AREA;
 import static by.psrer.entity.enums.UserState.ADD_DEPARTMENT_SELECTION_DEPARTMENT;
+import static by.psrer.entity.enums.UserState.ADD_JOB_SELECTION;
 import static by.psrer.entity.enums.UserState.AREA_SELECTION;
 import static by.psrer.entity.enums.UserState.DEPARTMENT_SELECTION;
 import static by.psrer.entity.enums.UserState.FIO_SELECTION;
@@ -19,6 +20,7 @@ import static by.psrer.entity.enums.UserState.GRANT_ACCESS_SELECTION;
 import static by.psrer.entity.enums.UserState.REMOVE_ADMIN_SELECTION;
 import static by.psrer.entity.enums.UserState.REMOVE_AREA_SELECTION;
 import static by.psrer.entity.enums.UserState.REMOVE_DEPARTMENT_SELECTION;
+import static by.psrer.entity.enums.UserState.REMOVE_JOB_SELECTION;
 import static by.psrer.entity.enums.UserState.REVOKE_ACCESS_SELECTION;
 
 @Component
@@ -37,7 +39,9 @@ public final class UserStateHandlerContainerImpl implements UserStateHandlerCont
                                          final RemoveAreaSelection removeAreaSelection,
                                          final AddDepartmentSelectionArea addDepartmentSelectionArea,
                                          final AddDepartmentSelectionDepartment addDepartmentSelectionDepartment,
-                                         final RemoveDepartmentSelection removeDepartmentSelection) {
+                                         final RemoveDepartmentSelection removeDepartmentSelection,
+                                         final AddJobSelection addJobSelection,
+                                         final RemoveJobSelection removeJobSelection) {
         userStateHandlerMap = new HashMap<>();
         userStateHandlerMap.put(AREA_SELECTION, areaSelection);
         userStateHandlerMap.put(DEPARTMENT_SELECTION, departmentSelection);
@@ -51,6 +55,8 @@ public final class UserStateHandlerContainerImpl implements UserStateHandlerCont
         userStateHandlerMap.put(ADD_DEPARTMENT_SELECTION_AREA, addDepartmentSelectionArea);
         userStateHandlerMap.put(ADD_DEPARTMENT_SELECTION_DEPARTMENT, addDepartmentSelectionDepartment);
         userStateHandlerMap.put(REMOVE_DEPARTMENT_SELECTION, removeDepartmentSelection);
+        userStateHandlerMap.put(ADD_JOB_SELECTION, addJobSelection);
+        userStateHandlerMap.put(REMOVE_JOB_SELECTION, removeJobSelection);
 
         this.basic = basic;
     }
