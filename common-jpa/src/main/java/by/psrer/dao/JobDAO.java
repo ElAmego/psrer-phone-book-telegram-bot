@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface JobDAO extends JpaRepository<Job, Long> {
     List<Job> findAllByOrderByJobIdAsc();
     Job findByJobName(final String jobName);
+    long count();
 
     @Query(value = "SELECT * FROM job ORDER BY job_id LIMIT 1 OFFSET :offset", nativeQuery = true)
     Job findNth(@Param("offset") final int offset);
