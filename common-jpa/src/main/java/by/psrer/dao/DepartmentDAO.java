@@ -47,4 +47,6 @@ public interface DepartmentDAO extends JpaRepository<Department, Long> {
     @Transactional
     @Query("DELETE FROM Department d WHERE d.departmentId = :departmentId")
     void deleteDepartmentByDepartmentId(@Param("departmentId") final Long departmentId);
+
+    void deleteByAreaAreaId(final Long areaId);
 }
