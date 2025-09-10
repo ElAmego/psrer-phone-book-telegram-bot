@@ -14,6 +14,7 @@ public interface DepartmentDAO extends JpaRepository<Department, Long> {
     List<Department> findByArea_AreaId(final Long areaId);
     List<Department> findAllByOrderByDepartmentIdAsc();
     Department findByDepartmentName(final String departmentName);
+    long count();
 
     @Query(value = "SELECT * FROM department WHERE area_id = :area_id ORDER BY department_id LIMIT 1 OFFSET :offset", nativeQuery = true)
     Department findNth(@Param("offset") final int offset, @Param("area_id") final Long areaId);
