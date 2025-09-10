@@ -3,6 +3,7 @@ package by.psrer.userState.impl;
 import by.psrer.dao.AreaDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.entity.Area;
+import by.psrer.service.AreaService;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
 import by.psrer.utils.ButtonFactory;
@@ -23,6 +24,7 @@ public final class RemoveAreaSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
     private final ButtonFactory buttonFactory;
     private final AreaDAO areaDAO;
+    private final AreaService areaService;
 
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
@@ -37,7 +39,7 @@ public final class RemoveAreaSelection implements UserStateHandler {
                 final Area area = selectedArea.get();
                 final Long areaId = area.getAreaId();
 
-                areaDAO.deleteAreaByAreaId(areaId);
+                areaService.deleteAreaWithDepartments(areaId);
                 output = "Участок \"" + area.getAreaName() + "\" успешно удален из базы данных.";
                 messageUtils.changeUserState(appUser, BASIC);
             } else {
