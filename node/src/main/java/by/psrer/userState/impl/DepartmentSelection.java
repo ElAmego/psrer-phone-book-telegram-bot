@@ -41,7 +41,8 @@ public final class DepartmentSelection implements UserStateHandler {
 
             if (selectedDepartment.isPresent()) {
                 final Long departmentId = selectedDepartment.get().getDepartmentId();
-                final List<Employee> employeeList = employeeDAO.findByDepartment_DepartmentId(departmentId);
+                final List<Employee> employeeList = employeeDAO
+                        .findByDepartment_DepartmentIdOrderByEmployeeIdAsc(departmentId);
 
                 if (!employeeList.isEmpty()) {
                     output.append("Список номеров:");
