@@ -12,6 +12,10 @@ import static by.psrer.entity.enums.UserState.ADD_ADMIN_SELECTION;
 import static by.psrer.entity.enums.UserState.ADD_AREA_SELECTION;
 import static by.psrer.entity.enums.UserState.ADD_DEPARTMENT_SELECTION_AREA;
 import static by.psrer.entity.enums.UserState.ADD_DEPARTMENT_SELECTION_DEPARTMENT;
+import static by.psrer.entity.enums.UserState.ADD_EMPLOYEE_SELECTION_DEPARTMENT;
+import static by.psrer.entity.enums.UserState.ADD_EMPLOYEE_SELECTION_FIO;
+import static by.psrer.entity.enums.UserState.ADD_EMPLOYEE_SELECTION_JOB;
+import static by.psrer.entity.enums.UserState.ADD_EMPLOYEE_SELECTION_PHONE;
 import static by.psrer.entity.enums.UserState.ADD_JOB_SELECTION;
 import static by.psrer.entity.enums.UserState.AREA_SELECTION;
 import static by.psrer.entity.enums.UserState.DEPARTMENT_SELECTION;
@@ -20,6 +24,8 @@ import static by.psrer.entity.enums.UserState.GRANT_ACCESS_SELECTION;
 import static by.psrer.entity.enums.UserState.REMOVE_ADMIN_SELECTION;
 import static by.psrer.entity.enums.UserState.REMOVE_AREA_SELECTION;
 import static by.psrer.entity.enums.UserState.REMOVE_DEPARTMENT_SELECTION;
+import static by.psrer.entity.enums.UserState.REMOVE_EMPLOYEE_SELECTION_DEPARTMENT;
+import static by.psrer.entity.enums.UserState.REMOVE_EMPLOYEE_SELECTION_EMPLOYEE;
 import static by.psrer.entity.enums.UserState.REMOVE_JOB_SELECTION;
 import static by.psrer.entity.enums.UserState.REVOKE_ACCESS_SELECTION;
 
@@ -41,7 +47,13 @@ public final class UserStateHandlerContainerImpl implements UserStateHandlerCont
                                          final AddDepartmentSelectionDepartment addDepartmentSelectionDepartment,
                                          final RemoveDepartmentSelection removeDepartmentSelection,
                                          final AddJobSelection addJobSelection,
-                                         final RemoveJobSelection removeJobSelection) {
+                                         final RemoveJobSelection removeJobSelection,
+                                         final AddEmployeeSelectionDepartment addEmployeeSelectionDepartment,
+                                         final AddEmployeeSelectionJob addEmployeeSelectionJob,
+                                         final AddEmployeeSelectionFio addEmployeeSelectionFio,
+                                         final AddEmployeeSelectionPhone addEmployeeSelectionPhone,
+                                         final RemoveEmployeeSelectionDepartment removeEmployeeSelectionDepartment,
+                                         final RemoveEmployeeSelectionEmployee removeEmployeeSelectionEmployee) {
         userStateHandlerMap = new HashMap<>();
         userStateHandlerMap.put(AREA_SELECTION, areaSelection);
         userStateHandlerMap.put(DEPARTMENT_SELECTION, departmentSelection);
@@ -57,6 +69,12 @@ public final class UserStateHandlerContainerImpl implements UserStateHandlerCont
         userStateHandlerMap.put(REMOVE_DEPARTMENT_SELECTION, removeDepartmentSelection);
         userStateHandlerMap.put(ADD_JOB_SELECTION, addJobSelection);
         userStateHandlerMap.put(REMOVE_JOB_SELECTION, removeJobSelection);
+        userStateHandlerMap.put(ADD_EMPLOYEE_SELECTION_DEPARTMENT, addEmployeeSelectionDepartment);
+        userStateHandlerMap.put(ADD_EMPLOYEE_SELECTION_JOB, addEmployeeSelectionJob);
+        userStateHandlerMap.put(ADD_EMPLOYEE_SELECTION_FIO, addEmployeeSelectionFio);
+        userStateHandlerMap.put(ADD_EMPLOYEE_SELECTION_PHONE, addEmployeeSelectionPhone);
+        userStateHandlerMap.put(REMOVE_EMPLOYEE_SELECTION_DEPARTMENT, removeEmployeeSelectionDepartment);
+        userStateHandlerMap.put(REMOVE_EMPLOYEE_SELECTION_EMPLOYEE, removeEmployeeSelectionEmployee);
 
         this.basic = basic;
     }

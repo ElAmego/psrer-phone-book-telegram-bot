@@ -23,4 +23,6 @@ public interface ButtonFactory {
     InlineKeyboardButton admins();
     InlineKeyboardButton removeJob();
     InlineKeyboardButton addJob();
+    InlineKeyboardButton addEmployee();
+    InlineKeyboardButton removeEmployee();
 }

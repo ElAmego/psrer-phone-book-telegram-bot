@@ -166,4 +166,20 @@ public final class ButtonFactoryImpl implements ButtonFactory {
                 .callbackData("addJobBtn")
                 .build();
     }
+
+    @Override
+    public InlineKeyboardButton addEmployee() {
+        return InlineKeyboardButton.builder()
+                .text("Добавить сотрудника")
+                .callbackData("addEmployeeBtn")
+                .build();
+    }
+
+    @Override
+    public InlineKeyboardButton removeEmployee() {
+        return InlineKeyboardButton.builder()
+                .text("Убрать сотрудника")
+                .callbackData("removeEmployeeBtn")
+                .build();
+    }
 }
