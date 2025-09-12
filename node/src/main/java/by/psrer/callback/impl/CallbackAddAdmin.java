@@ -26,12 +26,8 @@ public final class CallbackAddAdmin implements Callback {
     @Override
     public void execute(final AppUser appUser) {
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        final String output = """
-                Вы перешли в режим выбора. Введите телеграм ID пользователя которому хотите выдать права \
-                администратора, например: 13432334
-                
-                Нажмите на кнопку "Покинуть режима выбора" чтобы выйти из режима выбора.
-                """;
+        final String output = "Укажите Телеграм ID пользователя, которому хотите выдать роль администратора.";
+
         inlineKeyboardButtonList.add(buttonFactory.cancel());
         messageUtils.changeUserState(appUser, ADD_ADMIN_SELECTION);
         messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));

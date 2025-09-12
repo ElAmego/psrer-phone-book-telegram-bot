@@ -50,7 +50,7 @@ public final class ButtonFactoryImpl implements ButtonFactory {
     @Override
     public InlineKeyboardButton addAdmin() {
         return InlineKeyboardButton.builder()
-                .text("Добавить")
+                .text("Добавить администратора")
                 .callbackData("addAdminBtn")
                 .build();
     }
@@ -58,7 +58,7 @@ public final class ButtonFactoryImpl implements ButtonFactory {
     @Override
     public InlineKeyboardButton removeAdmin() {
         return InlineKeyboardButton.builder()
-                .text("Убрать")
+                .text("Удалить администратора")
                 .callbackData("removeAdminBtn")
                 .build();
     }
