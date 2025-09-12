@@ -169,15 +169,6 @@ public final class MessageUtilsImpl implements MessageUtils {
     }
 
     @Override
-    public void changeUserStateWithIntermediateValue(final AppUser appUser, final UserState userState,
-                                                     final Long intermediateValue) {
-        final AppUserConfig appUserConfig = appUser.getAppUserConfigId();
-        appUserConfig.setUserState(userState);
-        appUserConfig.setIntermediateValue(intermediateValue);
-        appUserConfigDAO.save(appUserConfig);
-    }
-
-    @Override
     public void deleteUserMessage(final AppUser appUser, final Update update) {
         final Long telegramUserId = appUser.getTelegramUserId();
         final int messageId = update.getMessage().getMessageId();

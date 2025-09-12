@@ -1,8 +1,10 @@
 package by.psrer.userState.impl;
 
+import by.psrer.dao.AppUserConfigDAO;
 import by.psrer.dao.AreaDAO;
 import by.psrer.dao.DepartmentDAO;
 import by.psrer.entity.AppUser;
+import by.psrer.entity.AppUserConfig;
 import by.psrer.entity.Area;
 import by.psrer.entity.Department;
 import by.psrer.userState.UserStateHandler;
@@ -27,6 +29,7 @@ public final class AreaSelection implements UserStateHandler {
     private final ButtonFactory buttonFactory;
     private final AreaDAO areaDAO;
     private final DepartmentDAO departmentDAO;
+    private final AppUserConfigDAO appUserConfigDAO;
 
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
@@ -42,6 +45,9 @@ public final class AreaSelection implements UserStateHandler {
                 final List<Department> departmentList = departmentDAO.findByArea_AreaId(areaId);
 
                 if (!departmentList.isEmpty()) {
+                    final AppUserConfig appUserConfig = appUser.getAppUserConfigId();
+                    int inc = 0;
+
                     output.append("""
                     Вы перешли в режим выбора. Для выбора необходимого отдела отправьте соответствующую цифру. \
                     Нажмите на кнопку "Покинуть режим выбора" чтобы выйти из режима выбора.
@@ -49,14 +55,15 @@ public final class AreaSelection implements UserStateHandler {
                     Список отделов:
                     """);
 
-                    int inc = 0;
-
                     for (final Department departmentFromList: departmentList) {
                         output.append(++inc).append(": ")
                                 .append(departmentFromList.getDepartmentName()).append("\n");
                     }
 
-                    messageUtils.changeUserStateWithIntermediateValue(appUser, DEPARTMENT_SELECTION, areaId);
+                    // areaId
+                    appUserConfig.getIntermediateData().put("areaId", areaId);
+                    appUserConfigDAO.save(appUserConfig);
+                    messageUtils.changeUserState(appUser, DEPARTMENT_SELECTION);
                 } else {
                     output.append("Список отделов текущего участка пуст. Вы вышли из режима выбора.");
                     messageUtils.changeUserState(appUser, BASIC);
