@@ -34,9 +34,8 @@ public final class DepartmentSelection implements UserStateHandler {
 
         if (textMessage.matches("[-+]?\\d+")) {
             final int selectedDepartmentId = Integer.parseInt(textMessage);
-            final Long intermediateValue = appUser.getAppUserConfigId().getIntermediateValue();
-            final Optional<Department> selectedDepartment = departmentDAO.findNthSafely(selectedDepartmentId,
-                    intermediateValue);
+            final Long areaId = ((Number) appUser.getAppUserConfigId().getIntermediateData().get("areaId")).longValue();
+            final Optional<Department> selectedDepartment = departmentDAO.findNthSafely(selectedDepartmentId, areaId);
 
             if (selectedDepartment.isPresent()) {
                 final Long departmentId = selectedDepartment.get().getDepartmentId();

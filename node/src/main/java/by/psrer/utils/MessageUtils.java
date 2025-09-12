@@ -9,7 +9,5 @@ public interface MessageUtils {
     void sendReplacedTextMessage(final AppUser appUser, final Answer answer);
     AppUser findOrSaveAppUser(final Update update);
     void changeUserState(final AppUser appUser, final UserState userState);
-    void changeUserStateWithIntermediateValue(final AppUser appUser, final UserState userState,
-                                              final Long intermediateValue);
     void deleteUserMessage(final AppUser appUser, final Update update);
 }
