@@ -1,41 +1,45 @@
 package by.psrer.callback.impl;
 
 import by.psrer.callback.Callback;
+import by.psrer.dao.AppUserDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.utils.Answer;
 import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.psrer.entity.enums.Status.ACTIVATED;
 import static by.psrer.entity.enums.UserState.REVOKE_ACCESS_SELECTION;
 
 @Service
+@RequiredArgsConstructor
 public final class CallbackRevokeAccess implements Callback {
     private final MessageUtils messageUtils;
     private final ButtonFactory buttonFactory;
-
-    public CallbackRevokeAccess(final MessageUtils messageUtils, final  ButtonFactory buttonFactory) {
-        this.messageUtils = messageUtils;
-        this.buttonFactory = buttonFactory;
-    }
+    private final AppUserDAO appUserDAO;
 
     @Override
     public void execute(final AppUser appUser) {
+        final List<AppUser> activatedUserList = appUserDAO.findByAppUserConfigIdStatus(ACTIVATED);
+        final StringBuilder output = new StringBuilder();
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        final String output = """
-                Вы перешли в режим выбора. Введите телеграм ID пользователя у которого хотите отозвать доступ, \
-                например: 13432334
-                
-                Нажмите на кнопку "Покинуть режим выбора" чтобы выйти из режима выбора.
-                """;
+        int inc = 0;
 
+        output.append("Укажите Телеграм ID пользователя из списка у которого вы хотите отозвать доступ.\n");
+
+        for (final AppUser activatedUser: activatedUserList) {
+            output.append("\n").append(++inc).append(": ").append(activatedUser.getFirstName()).append(" ")
+                    .append(activatedUser.getLastName()).append(", ").append("@").append(activatedUser.getUsername())
+                    .append("\nТелеграм ID: ").append(activatedUser.getTelegramUserId());
+        }
 
         inlineKeyboardButtonList.add(buttonFactory.cancel());
         messageUtils.changeUserState(appUser, REVOKE_ACCESS_SELECTION);
-        messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
+        messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(), inlineKeyboardButtonList));
     }
 }

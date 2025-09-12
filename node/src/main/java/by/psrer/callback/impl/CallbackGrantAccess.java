@@ -27,33 +27,20 @@ public final class CallbackGrantAccess implements Callback {
     public void execute(final AppUser appUser) {
         final List<AppUser> appUserList = appUserDAO.findByAppUserConfigIdStatus(NOT_ACTIVATED);
         final StringBuilder output = new StringBuilder();
-        List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
+        int inc = 0;
 
-        if (!appUserList.isEmpty()) {
-            int inc = 0;
-            output.append("""
-                Вы перешли в режим выбора. Введите телеграм ID пользователя которому хотите выдать доступ, например: \
-                13432334.
-                
-                Список пользователей без доступа:
-                """);
+        output.append("Укажите Телеграм ID пользователя из списка, которому вы хотите выдать доступ.\n");
 
-            for (final AppUser appUserFromList: appUserList) {
-                output.append("\n").append(++inc).append(": ").append(appUserFromList.getFirstName()).append(" ")
-                        .append(appUserFromList.getLastName()).append(", ").append("@")
-                        .append(appUserFromList.getUsername()).append("\nТелеграм ID: ")
-                        .append(appUserFromList.getTelegramUserId());
-            }
-
-            output.append("\n\nНажмите на кнопку \"Покинуть режима выбора\" чтобы выйти из режима выбора.");
-
-            inlineKeyboardButtonList.add(buttonFactory.cancel());
-
-            messageUtils.changeUserState(appUser, GRANT_ACCESS_SELECTION);
-        } else {
-            output.append("Список не активированных пользователей пуст.");
+        for (final AppUser appUserFromList: appUserList) {
+            output.append("\n").append(++inc).append(": ").append(appUserFromList.getFirstName()).append(" ")
+                    .append(appUserFromList.getLastName()).append(", ").append("@")
+                    .append(appUserFromList.getUsername()).append("\nТелеграм ID: ")
+                    .append(appUserFromList.getTelegramUserId());
         }
 
+        inlineKeyboardButtonList.add(buttonFactory.cancel());
+        messageUtils.changeUserState(appUser, GRANT_ACCESS_SELECTION);
         messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(), inlineKeyboardButtonList));
     }
 }

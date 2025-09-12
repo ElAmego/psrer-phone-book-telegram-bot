@@ -25,29 +25,16 @@ public final class CallbackAdmins implements Callback {
 
     @Override
     public void execute(final AppUser appUser) {
-        final StringBuilder output = new StringBuilder("Список администраторов: ");
-        final Long chatId = appUser.getTelegramUserId();
-        final List<AppUser> appUserList = appUserDAO.findByAppUserConfigIdRole(ADMIN);
-        final List<InlineKeyboardButton> inlineKeyboardButtonList = createAdminsButtons();
+        final long adminQuantity = appUserDAO.countByAppUserConfigId_Role(ADMIN);
+        final List<InlineKeyboardButton> inlineKeyboardButtonList =  new ArrayList<>();
+        final String output = "Количество администраторов бота: " + adminQuantity;
 
-        if (!appUserList.isEmpty()) {
-            int inc = 0;
-            for (final AppUser appUserFromList: appUserList) {
-                output.append("\n").append(++inc).append(": ").append(appUserFromList.getFirstName()).append(" ")
-                        .append(appUserFromList.getLastName()).append(", ").append(appUserFromList.getUsername())
-                        .append("\nТелеграм ID пользователя: ").append(appUserFromList.getTelegramUserId());
-            }
+        if (adminQuantity > 1) {
+            inlineKeyboardButtonList.add(buttonFactory.removeAdmin());
         }
 
-        messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(),
-                inlineKeyboardButtonList));
-    }
-
-    private List<InlineKeyboardButton> createAdminsButtons() {
-        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
         inlineKeyboardButtonList.add(buttonFactory.addAdmin());
-        inlineKeyboardButtonList.add(buttonFactory.removeAdmin());
         inlineKeyboardButtonList.add(buttonFactory.mainMenu());
-        return inlineKeyboardButtonList;
+        messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
     }
 }

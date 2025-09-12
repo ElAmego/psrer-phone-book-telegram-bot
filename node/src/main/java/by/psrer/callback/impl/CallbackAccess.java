@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static by.psrer.entity.enums.Status.ACTIVATED;
+import static by.psrer.entity.enums.Status.NOT_ACTIVATED;
 
 @Service
 @RequiredArgsConstructor
@@ -24,28 +25,21 @@ public final class CallbackAccess implements Callback {
 
     @Override
     public void execute(final AppUser appUser) {
-        final StringBuilder output = new StringBuilder("Список пользователей с выданным доступом: ");
-        final List<AppUser> appUserList = appUserDAO.findByAppUserConfigIdStatus(ACTIVATED);
-        final List<InlineKeyboardButton> inlineKeyboardButtonList = createAccessButtons();
+        final long unActivatedUserQuantity = appUserDAO.countByAppUserConfigId_Status(NOT_ACTIVATED);
+        final long activatedUserQuantity = appUserDAO.countByAppUserConfigId_Status(ACTIVATED);
+        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
+        final String output = "Количество активированных пользователей бота: " + activatedUserQuantity +
+                "\nКоличество пользователей, ожидающих активацию: " + unActivatedUserQuantity;
 
-        if (!appUserList.isEmpty()) {
-            int inc = 0;
-            for (final AppUser appUserFromList: appUserList) {
-                output.append("\n").append(++inc).append(": ").append(appUserFromList.getFirstName()).append(" ")
-                        .append(appUserFromList.getLastName()).append(", ").append(appUserFromList.getUsername())
-                        .append("\nТелеграм ID пользователя: ").append(appUserFromList.getTelegramUserId());
-            }
+        if (unActivatedUserQuantity != 0) {
+            inlineKeyboardButtonList.add(buttonFactory.grantAccess());
         }
 
-        messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(),
-                inlineKeyboardButtonList));
-    }
+        if (activatedUserQuantity > 1) {
+            inlineKeyboardButtonList.add(buttonFactory.revokeAccess());
+        }
 
-    private List<InlineKeyboardButton> createAccessButtons() {
-        final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        inlineKeyboardButtonList.add(buttonFactory.grantAccess());
-        inlineKeyboardButtonList.add(buttonFactory.revokeAccess());
         inlineKeyboardButtonList.add(buttonFactory.mainMenu());
-        return inlineKeyboardButtonList;
+        messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
     }
 }

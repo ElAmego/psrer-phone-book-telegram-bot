@@ -11,4 +11,6 @@ public interface AppUserDAO extends JpaRepository<AppUser, Long> {
     AppUser findAppUserByTelegramUserId(final Long userId);
     List<AppUser> findByAppUserConfigIdRole(final Role role);
     List<AppUser> findByAppUserConfigIdStatus(final Status status);
+    long countByAppUserConfigId_Status(final Status status);
+    long countByAppUserConfigId_Role(final Role role);
 }
