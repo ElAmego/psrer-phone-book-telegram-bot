@@ -19,6 +19,7 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Transactional
+    @Override
     public void deleteAreaWithDepartments(final Long areaId) {
         departmentDAO.deleteByAreaAreaId(areaId);
         areaDAO.deleteById(areaId);
