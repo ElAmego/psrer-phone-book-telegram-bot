@@ -1,9 +1,7 @@
 package by.psrer.dao;
 
 import by.psrer.entity.Job;
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -30,8 +28,5 @@ public interface JobDAO extends JpaRepository<Job, Long> {
         }
     }
 
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM Job j WHERE j.jobId = :jobId")
-    void deleteJobByJobId(@Param("jobId") final Long jobId);
+    void deleteById(final Long jobId);
 }
