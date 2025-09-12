@@ -24,7 +24,6 @@ public final class FioSelection implements UserStateHandler {
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
         final StringBuilder output = new StringBuilder();
-        final Long chatId = appUser.getTelegramUserId();
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
         final List<Employee> employeeList = employeeDAO.
                 findByEmployeeNameContainingIgnoreCaseOrderByEmployeeNameAsc(textMessage);
@@ -49,6 +48,6 @@ public final class FioSelection implements UserStateHandler {
                 режима выбора.
                 """);
         inlineKeyboardButtonList.add(buttonFactory.cancel());
-        messageUtils.sendTextMessage(chatId, new Answer(output.toString(), inlineKeyboardButtonList));
+        messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(), inlineKeyboardButtonList));
     }
 }
