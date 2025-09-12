@@ -31,7 +31,7 @@ public final class CallbackAddDepartment implements Callback {
 
         if (!areaList.isEmpty()) {
             int inc = 0;
-            output.append("Укажите номер участка к которому должен быть прикреплен отдел (Например: 1):");
+            output.append("Укажите номер участка к которому должен быть прикреплен отдел (Например: 1):\n");
 
             for (final Area area: areaList) {
                 output.append("\n").append(++inc).append(": ").append(area.getAreaName());

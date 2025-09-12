@@ -3,7 +3,6 @@ package by.psrer.callback.impl;
 import by.psrer.callback.Callback;
 import by.psrer.dao.AreaDAO;
 import by.psrer.entity.AppUser;
-import by.psrer.entity.Area;
 import by.psrer.utils.Answer;
 import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
@@ -23,25 +22,20 @@ public final class CallbackAreas implements Callback {
 
     @Override
     public void execute(final AppUser appUser) {
-        final StringBuilder output = new StringBuilder();
-        final List<Area> areaList = areaDAO.findAllByOrderByAreaIdAsc();
+        String output;
+        final long areaQuantity = areaDAO.count();
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
 
-        if (!areaList.isEmpty()) {
-            output.append("Список участков: ");
-            int inc = 0;
-
-            for (final Area area: areaList) {
-                output.append("\n").append(++inc).append(": ").append(area.getAreaName());
-            }
+        if (areaQuantity != 0) {
+            output = "Количество участков в базе данных: " + areaQuantity;
 
             inlineKeyboardButtonList.add(buttonFactory.removeArea());
         } else {
-            output.append("Список участков в базе данных пуст.");
+            output = "Список участков в базе данных пуст.";
         }
 
         inlineKeyboardButtonList.add(buttonFactory.addArea());
         inlineKeyboardButtonList.add(buttonFactory.dataManagement());
-        messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(), inlineKeyboardButtonList));
+        messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
     }
 }

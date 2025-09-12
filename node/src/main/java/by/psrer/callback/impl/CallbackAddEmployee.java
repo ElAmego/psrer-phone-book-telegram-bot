@@ -30,7 +30,7 @@ public final class CallbackAddEmployee implements Callback {
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
 
         if (!departmentList.isEmpty()) {
-            output.append("Укажите номер отдела к которому должен быть прикреплен сотрудник (Например: 1):");
+            output.append("Укажите номер отдела к которому должен быть прикреплен сотрудник (Например: 1):\n");
 
             int inc = 0;
             for (final Department department: departmentList) {
