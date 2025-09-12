@@ -29,7 +29,6 @@ public final class DepartmentSelection implements UserStateHandler {
 
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
-        final Long chatId = appUser.getTelegramUserId();
         final StringBuilder output = new StringBuilder();
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
 
@@ -76,6 +75,6 @@ public final class DepartmentSelection implements UserStateHandler {
             inlineKeyboardButtonList.add(buttonFactory.cancel());
         }
 
-        messageUtils.sendTextMessage(chatId, new Answer(output.toString(), inlineKeyboardButtonList));
+        messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(), inlineKeyboardButtonList));
     }
 }
