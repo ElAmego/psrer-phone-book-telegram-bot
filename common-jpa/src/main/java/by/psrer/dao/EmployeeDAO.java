@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface EmployeeDAO extends JpaRepository<Employee, Long> {
     List<Employee> findByDepartment_DepartmentIdOrderByEmployeeIdAsc(final Long departmentId);
     List<Employee> findByEmployeeNameContainingIgnoreCaseOrderByEmployeeNameAsc(final String namePart);
+    void deleteByDepartmentDepartmentId(final Long departmentId);
+    void deleteByJobJobId(final Long jobId);
     long count();
 
     @Query(value = "SELECT * FROM employee WHERE department_id = :department_id ORDER BY employee_id LIMIT 1 OFFSET :offset",

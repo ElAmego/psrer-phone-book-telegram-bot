@@ -3,6 +3,7 @@ package by.psrer.userState.impl;
 import by.psrer.dao.JobDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.entity.Job;
+import by.psrer.service.JobService;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
 import by.psrer.utils.ButtonFactory;
@@ -23,6 +24,7 @@ public final class RemoveJobSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
     private final ButtonFactory buttonFactory;
     private final JobDAO jobDAO;
+    private final JobService jobService;
 
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
@@ -37,7 +39,7 @@ public final class RemoveJobSelection implements UserStateHandler {
                 final Job job = selectedJob.get();
                 final Long jobId = job.getJobId();
 
-                jobDAO.deleteJobByJobId(jobId);
+                jobService.deleteJobWithEmployees(jobId);
                 output = "Должность \"" + job.getJobName() + "\" успешно удален из базы данных.";
                 messageUtils.changeUserState(appUser, BASIC);
             } else {

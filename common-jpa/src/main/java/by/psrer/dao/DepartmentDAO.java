@@ -1,9 +1,7 @@
 package by.psrer.dao;
 
 import by.psrer.entity.Department;
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -46,10 +44,7 @@ public interface DepartmentDAO extends JpaRepository<Department, Long> {
         }
     }
 
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM Department d WHERE d.departmentId = :departmentId")
-    void deleteDepartmentByDepartmentId(@Param("departmentId") final Long departmentId);
+    void deleteById(final Long departmentId);
 
     void deleteByAreaAreaId(final Long areaId);
 }

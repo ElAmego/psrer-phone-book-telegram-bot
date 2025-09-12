@@ -3,6 +3,7 @@ package by.psrer.userState.impl;
 import by.psrer.dao.DepartmentDAO;
 import by.psrer.entity.AppUser;
 import by.psrer.entity.Department;
+import by.psrer.service.DepartmentService;
 import by.psrer.userState.UserStateHandler;
 import by.psrer.utils.Answer;
 import by.psrer.utils.ButtonFactory;
@@ -23,6 +24,7 @@ public final class RemoveDepartmentSelection implements UserStateHandler {
     private final MessageUtils messageUtils;
     private final ButtonFactory buttonFactory;
     private final DepartmentDAO departmentDAO;
+    private final DepartmentService departmentService;
 
     @Override
     public void execute(final AppUser appUser, final String textMessage) {
@@ -37,7 +39,7 @@ public final class RemoveDepartmentSelection implements UserStateHandler {
                 final Department department = selectedDepartment.get();
                 final Long departmentId = department.getDepartmentId();
 
-                departmentDAO.deleteDepartmentByDepartmentId(departmentId);
+                departmentService.deleteDepartmentWithEmployees(departmentId);
                 output = "Отдел \"" + department.getDepartmentName() + "\" успешно удален из базы данных.";
                 messageUtils.changeUserState(appUser, BASIC);
             } else {
