@@ -178,7 +178,7 @@ public final class ButtonFactoryImpl implements ButtonFactory {
     @Override
     public InlineKeyboardButton removeEmployee() {
         return InlineKeyboardButton.builder()
-                .text("Убрать сотрудника")
+                .text("Удалить сотрудника")
                 .callbackData("removeEmployeeBtn")
                 .build();
     }

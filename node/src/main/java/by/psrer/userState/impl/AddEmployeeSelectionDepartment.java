@@ -48,7 +48,7 @@ public final class AddEmployeeSelectionDepartment implements UserStateHandler {
                 appUserConfig.getIntermediateData().put("departmentId", departmentId);
                 appUserConfigDAO.save(appUserConfig);
                 messageUtils.changeUserState(appUser, ADD_EMPLOYEE_SELECTION_JOB);
-                output.append("Введите номер должности для нового сотрудника: ");
+                output.append("Укажите номер должности для нового сотрудника:\n");
 
                 int inc = 0;
                 for (final Job job: jobList) {

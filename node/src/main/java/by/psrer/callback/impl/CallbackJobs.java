@@ -3,7 +3,6 @@ package by.psrer.callback.impl;
 import by.psrer.callback.Callback;
 import by.psrer.dao.JobDAO;
 import by.psrer.entity.AppUser;
-import by.psrer.entity.Job;
 import by.psrer.utils.Answer;
 import by.psrer.utils.ButtonFactory;
 import by.psrer.utils.MessageUtils;
@@ -23,25 +22,20 @@ public final class CallbackJobs implements Callback {
 
     @Override
     public void execute(final AppUser appUser) {
-        final StringBuilder output = new StringBuilder();
-        final List<Job> jobList = jobDAO.findAllByOrderByJobIdAsc();
+        String output;
+        final long jobQuantity = jobDAO.count();
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
 
-        if (!jobList.isEmpty()) {
-            output.append("Список должностей: ");
-            int inc = 0;
-
-            for (final Job job: jobList) {
-                output.append("\n").append(++inc).append(": ").append(job.getJobName());
-            }
+        if (jobQuantity != 0) {
+            output = "Количество должностей в базе данных: " + jobQuantity;
 
             inlineKeyboardButtonList.add(buttonFactory.removeJob());
         } else {
-            output.append("Список должностей в базе данных пуст.");
+            output = "Список должностей в базе данных пуст.";
         }
 
         inlineKeyboardButtonList.add(buttonFactory.addJob());
         inlineKeyboardButtonList.add(buttonFactory.dataManagement());
-        messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(), inlineKeyboardButtonList));
+        messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
     }
 }

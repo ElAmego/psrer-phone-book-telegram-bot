@@ -49,7 +49,7 @@ public final class RemoveEmployeeSelectionDepartment implements UserStateHandler
                 appUserConfig.getIntermediateData().put("departmentId", departmentId);
                 appUserConfigDAO.save(appUserConfig);
                 messageUtils.changeUserState(appUser, REMOVE_EMPLOYEE_SELECTION_EMPLOYEE);
-                output.append("Введите номер сотрудника для удаления из базы данных: ");
+                output.append("Введите номер сотрудника для удаления из базы данных:\n");
 
                 int inc = 0;
                 for (final Employee employee: employeeList) {
