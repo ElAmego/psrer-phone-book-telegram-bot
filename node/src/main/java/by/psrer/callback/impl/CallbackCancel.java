@@ -18,7 +18,7 @@ public final class CallbackCancel implements Callback {
 
     @Override
     public void execute(final AppUser appUser) {
-        messageUtils.sendReplacedTextMessage(appUser, new Answer("Вы вышли из режима выбора.",
+        messageUtils.sendReplacedTextMessage(appUser, new Answer("Вы покинули режима выбора.",
                 null));
         messageUtils.changeUserState(appUser, BASIC);
     }

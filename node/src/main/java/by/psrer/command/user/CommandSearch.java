@@ -27,12 +27,7 @@ public final class CommandSearch implements Command {
     public void execute(final AppUser appUser) {
         final Long chatId = appUser.getTelegramUserId();
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        final String output = """
-                Вы перешли в режим поиска по ФИО. Нажмите на кнопку "Покинуть режим выбора" чтобы выйти из режима \
-                выбора.
-                
-                Введите подстроку ФИО для поиска:
-                """;
+        final String output = "Введите подстроку ФИО для поиска (Например: Иванов или ив): ";
 
         inlineKeyboardButtonList.add(buttonFactory.cancel());
         messageUtils.changeUserState(appUser, FIO_SELECTION);

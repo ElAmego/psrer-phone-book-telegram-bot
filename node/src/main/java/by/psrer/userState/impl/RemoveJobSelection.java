@@ -40,7 +40,7 @@ public final class RemoveJobSelection implements UserStateHandler {
                 final Long jobId = job.getJobId();
 
                 jobService.deleteJobWithEmployees(jobId);
-                output = "Должность \"" + job.getJobName() + "\" успешно удален из базы данных.";
+                output = "Должность \"" + job.getJobName() + "\" успешно удалена из базы данных.";
                 messageUtils.changeUserState(appUser, BASIC);
             } else {
                 output = "В списке нет выбранного вами значения. Введите корректное значение или покиньте режим выбора.";

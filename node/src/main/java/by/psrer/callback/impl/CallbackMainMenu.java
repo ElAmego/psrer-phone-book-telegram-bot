@@ -39,7 +39,7 @@ public final class CallbackMainMenu implements Callback {
                 .append(appUser.getUsername()).append("\nВаш телеграм ID: ").append(appUser.getTelegramUserId());
 
         output.append("\n\nКоличество записей в базе данных:").append("\nУчастки: ").append(areaQuantity)
-                .append("\nОтделы: ").append(departmentQuantity).append("\nРаботники: ").append(employeeQuantity)
+                .append("\nОтделы: ").append(departmentQuantity).append("\nСотрудники: ").append(employeeQuantity)
                 .append("\nДолжности: ").append(jobQuantity);
 
         final List<InlineKeyboardButton> inlineKeyboardButtonList = createMainMenuButtons();

@@ -44,8 +44,8 @@ public final class AddEmployeeSelectionPhone implements UserStateHandler {
                     .append("\n").append(employee.getDepartment().getDepartmentName()).append(", ")
                     .append(employee.getJob().getJobName()).append("\n\nСотрудник успешно добавлен в базу данных.");
         } else {
-            output.append("Введенный вами номер телефона не соответствует формату (+375293333333 или +80293333333). Введите " +
-                    "номер телефона ещё раз или покиньте режим выбора.");
+            output.append("Введенный вами номер телефона не соответствует формату (+375293333333 или +80293333333). " +
+                    "Введите номер телефона ещё раз или покиньте режим выбора.");
             inlineKeyboardButtonList.add(buttonFactory.cancel());
         }
 

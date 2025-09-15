@@ -29,7 +29,7 @@ public final class CallbackRemoveArea implements Callback {
         final List<Area> areaList = areaDAO.findAllByOrderByAreaIdAsc();
         final StringBuilder output = new StringBuilder();
 
-        output.append("Введите номер участка из списка, который вы хотите удалить из базы данных (Например 1):\n");
+        output.append("Введите номер участка из списка, который вы хотите удалить из базы данных (Например: 1):\n");
 
         int inc = 0;
 

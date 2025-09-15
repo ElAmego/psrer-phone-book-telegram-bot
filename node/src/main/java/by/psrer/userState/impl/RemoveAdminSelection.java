@@ -51,23 +51,17 @@ public final class RemoveAdminSelection implements UserStateHandler {
                     messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
                     messageUtils.sendTextMessage(selectedAppUserId, new Answer(notification, null));
                 } else {
-                    output = ("""
-                    Пользователь уже является пользователем. Введите заново или покиньте режим выбора.
-                    """);
+                    output = ("Пользователь уже является пользователем. Введите заново или покиньте режим выбора.");
                     inlineKeyboardButtonList.add(buttonFactory.cancel());
                 }
             } else {
-                output = ("""
-                    Пользователя с таким id нет в базе данных. Введите заново или покиньте режим выбора.
-                    """);
+                output = ("Пользователя с таким id нет в базе данных. Введите заново или покиньте режим выбора.");
                 inlineKeyboardButtonList.add(buttonFactory.cancel());
             }
 
         } else {
-            output = ("""
-                    Вы ввели недопустимое значение! Телеграм ID состоит только из цифр. Введите заново или покиньте \
-                    режим выбора.
-                    """);
+            output = ("Вы ввели недопустимое значение! Телеграм ID состоит только из цифр. Введите заново или " +
+                    "покиньте режим выбора.");
             inlineKeyboardButtonList.add(buttonFactory.cancel());
         }
 

@@ -35,17 +35,12 @@ public final class CommandPhones implements Command {
             output.append("Список участков пуст.");
         } else {
             inlineKeyboardButtonList.add(buttonFactory.cancel());
-            output.append("""
-                        Вы перешли в режим выбора. Для выбора необходимого участка отправьте соответствующую цифру. \
-                        Нажмите на кнопку "Покинуть режим выбора" чтобы выйти из режима выбора.
-                        
-                        Список участков:
-                        """);
+            output.append("Введите номер необходимого участка из списка (Например: 1):\n");
 
             int inc = 0;
 
             for (final Area areaFromList: areaList) {
-                output.append(++inc).append(": ").append(areaFromList.getAreaName()).append("\n");
+                output.append("\n").append(++inc).append(": ").append(areaFromList.getAreaName());
             }
 
             messageUtils.changeUserState(appUser, AREA_SELECTION);
