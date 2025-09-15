@@ -43,10 +43,8 @@ public final class AddDepartmentSelectionArea implements UserStateHandler {
 
                 appUserConfig.getIntermediateData().put("areaId", areaId);
                 appUserConfigDAO.save(appUserConfig);
-
                 messageUtils.changeUserState(appUser, ADD_DEPARTMENT_SELECTION_DEPARTMENT);
                 output = "Введите название отдела: ";
-
             } else {
                 output = "В списке нет выбранного вами значения. Введите корректное значение или покиньте режим выбора.";
             }

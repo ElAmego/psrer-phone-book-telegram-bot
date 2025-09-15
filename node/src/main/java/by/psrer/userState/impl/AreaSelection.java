@@ -46,10 +46,10 @@ public final class AreaSelection implements UserStateHandler {
 
                 if (!departmentList.isEmpty()) {
                     final AppUserConfig appUserConfig = appUser.getAppUserConfigId();
-                    int inc = 0;
 
                     output.append("Введите номер необходимого отдела из списка (Например: 1):\n");
 
+                    int inc = 0;
                     for (final Department departmentFromList: departmentList) {
                         output.append("\n").append(++inc).append(": ").append(departmentFromList.getDepartmentName());
                     }

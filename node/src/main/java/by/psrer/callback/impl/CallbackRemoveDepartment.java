@@ -32,7 +32,6 @@ public final class CallbackRemoveDepartment implements Callback {
         output.append("Введите номер отдела из списка, который вы хотите удалить из базы данных (Например: 1):\n");
 
         int inc = 0;
-
         for (final Department department: departmentList) {
             output.append("\n").append(++inc).append(": ").append(department.getDepartmentName());
         }

@@ -37,9 +37,9 @@ public final class AddEmployeeSelectionPhone implements UserStateHandler {
 
         if (textMessage.matches("^\\+(?:375\\d{9}|80\\d{9})$")) {
             final Employee employee = createEmployee(appUser, textMessage);
+
             employeeDAO.save(employee);
             messageUtils.changeUserState(appUser, BASIC);
-
             output.append(employee.getEmployeeName()).append(", ").append(employee.getPhoneNumber())
                     .append("\n").append(employee.getDepartment().getDepartmentName()).append(", ")
                     .append(employee.getJob().getJobName()).append("\n\nСотрудник успешно добавлен в базу данных.");

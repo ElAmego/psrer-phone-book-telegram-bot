@@ -30,7 +30,6 @@ public final class CommandPhones implements Command {
         final StringBuilder output = new StringBuilder();
         List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
 
-
         if (areaList.isEmpty()) {
             output.append("Список участков пуст.");
         } else {
@@ -38,7 +37,6 @@ public final class CommandPhones implements Command {
             output.append("Введите номер необходимого участка из списка (Например: 1):\n");
 
             int inc = 0;
-
             for (final Area areaFromList: areaList) {
                 output.append("\n").append(++inc).append(": ").append(areaFromList.getAreaName());
             }

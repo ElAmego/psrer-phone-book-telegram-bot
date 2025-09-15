@@ -44,7 +44,6 @@ public final class GrantAccessSelection implements UserStateHandler {
 
                     appUserConfig.setStatus(ACTIVATED);
                     appUserConfigDAO.save(appUserConfig);
-
                     messageUtils.changeUserState(appUser, BASIC);
                     messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
                     messageUtils.sendTextMessage(selectedAppUserId, new Answer(notification, null));

@@ -32,7 +32,6 @@ public final class CallbackRemoveEmployee implements Callback {
         output.append("Выберите номер отдела, в котором находится необходимый вам сотрудник:\n");
 
         int inc = 0;
-
         for (final Department department: departmentList) {
             output.append("\n").append(++inc).append(": ").append(department.getDepartmentName());
         }

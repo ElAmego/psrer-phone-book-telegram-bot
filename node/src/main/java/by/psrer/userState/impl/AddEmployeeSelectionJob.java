@@ -43,7 +43,6 @@ public final class AddEmployeeSelectionJob implements UserStateHandler {
 
                 appUserConfig.getIntermediateData().put("jobId", jobId);
                 appUserConfigDAO.save(appUserConfig);
-
                 messageUtils.changeUserState(appUser, ADD_EMPLOYEE_SELECTION_FIO);
                 output = "Введите ФИО нового сотрудника (Например: Иванов Иван Иванович): ";
 

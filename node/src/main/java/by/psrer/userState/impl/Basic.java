@@ -30,7 +30,6 @@ public final class Basic implements UserStateHandler {
         if (textMessage.startsWith("/")) {
             final Role userRole = appUser.getAppUserConfigId().getRole();
             final String cmd = textMessage.split(" ")[0].toLowerCase();
-
             final Optional<Command> command = commandFactory.getCommand(cmd, userRole);
 
             if (command.isPresent()) {
