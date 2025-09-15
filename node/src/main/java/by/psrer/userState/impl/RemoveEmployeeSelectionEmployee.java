@@ -40,9 +40,8 @@ public final class RemoveEmployeeSelectionEmployee implements UserStateHandler {
                 final Employee employee = selectedEmployee.get();
 
                 employeeDAO.deleteEmployeeByEmployeeId(employee.getEmployeeId());
-                messageUtils.changeUserState(appUser, BASIC);
-
                 output = "Сотрудник " + employee.getEmployeeName() + " успешно удален из базы данных.";
+                messageUtils.changeUserState(appUser, BASIC);
             } else {
                 output = "В списке нет выбранного вами значения. Введите корректное значение или покиньте режим " +
                         "выбора.";

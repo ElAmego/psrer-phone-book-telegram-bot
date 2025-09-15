@@ -32,7 +32,6 @@ public final class CallbackRemoveArea implements Callback {
         output.append("Введите номер участка из списка, который вы хотите удалить из базы данных (Например: 1):\n");
 
         int inc = 0;
-
         for (final Area area: areaList) {
             output.append("\n").append(++inc).append(": ").append(area.getAreaName());
         }

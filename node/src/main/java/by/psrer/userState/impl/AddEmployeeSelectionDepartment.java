@@ -59,8 +59,8 @@ public final class AddEmployeeSelectionDepartment implements UserStateHandler {
                         "выбора.");
             }
         } else {
-            output.append("Введенное вами значение не является цифрой. Введите корректное значение или покиньте режим " +
-                    "выбора.");
+            output.append("Введенное вами значение не является цифрой. Введите корректное значение или покиньте " +
+                    "режим выбора.");
         }
 
         inlineKeyboardButtonList.add(buttonFactory.cancel());

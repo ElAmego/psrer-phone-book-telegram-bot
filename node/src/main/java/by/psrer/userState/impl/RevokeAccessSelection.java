@@ -44,7 +44,6 @@ public final class RevokeAccessSelection implements UserStateHandler {
 
                     appUserConfig.setStatus(NOT_ACTIVATED);
                     appUserConfigDAO.save(appUserConfig);
-
                     messageUtils.changeUserState(appUser, BASIC);
                     messageUtils.sendReplacedTextMessage(appUser, new Answer(output, inlineKeyboardButtonList));
                     messageUtils.sendTextMessage(selectedAppUserId, new Answer(notification, null));

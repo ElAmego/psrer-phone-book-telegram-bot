@@ -30,6 +30,7 @@ public final class FioSelection implements UserStateHandler {
 
         if (!employeeList.isEmpty()) {
             output.append("Список сотрудников по заданной подстроке \"").append(textMessage).append("\":");
+
             int inc = 0;
             for (final Employee employeeFromList: employeeList) {
                 output.append("\n").append(++inc).append(": ").append(employeeFromList.getEmployeeName())

@@ -46,7 +46,6 @@ public final class DepartmentSelection implements UserStateHandler {
                     output.append("Список номеров выбранного вами отдела:\n");
 
                     int inc = 0;
-
                     for (final Employee employeeFromList: employeeList) {
                         output.append("\n").append(++inc).append(": ").append(employeeFromList.getEmployeeName())
                                 .append("\n").append(employeeFromList.getJob().getJobName()).append(",\n")

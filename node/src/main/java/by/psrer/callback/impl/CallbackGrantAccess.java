@@ -28,10 +28,10 @@ public final class CallbackGrantAccess implements Callback {
         final List<AppUser> appUserList = appUserDAO.findByAppUserConfigIdStatus(NOT_ACTIVATED);
         final StringBuilder output = new StringBuilder();
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        int inc = 0;
 
         output.append("Укажите Телеграм ID пользователя из списка, которому вы хотите выдать доступ.\n");
 
+        int inc = 0;
         for (final AppUser appUserFromList: appUserList) {
             output.append("\n").append(++inc).append(": ").append(appUserFromList.getFirstName()).append(" ")
                     .append(appUserFromList.getLastName()).append(", ").append("@")

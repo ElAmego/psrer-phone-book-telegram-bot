@@ -28,10 +28,9 @@ public final class CallbackRevokeAccess implements Callback {
         final List<AppUser> activatedUserList = appUserDAO.findByAppUserConfigIdStatus(ACTIVATED);
         final StringBuilder output = new StringBuilder();
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        int inc = 0;
-
         output.append("Укажите Телеграм ID пользователя из списка у которого вы хотите отозвать доступ.\n");
 
+        int inc = 0;
         for (final AppUser activatedUser: activatedUserList) {
             output.append("\n").append(++inc).append(": ").append(activatedUser.getFirstName()).append(" ")
                     .append(activatedUser.getLastName()).append(", ").append("@").append(activatedUser.getUsername())

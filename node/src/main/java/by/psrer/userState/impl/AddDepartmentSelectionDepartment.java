@@ -38,13 +38,13 @@ public final class AddDepartmentSelectionDepartment implements UserStateHandler 
             if (selectedDepartment == null) {
                 var areaId = appUser.getAppUserConfigId().getIntermediateData().get("areaId");
                 final Area area = areaDAO.findByAreaId((Integer) areaId);
-                output = "Отдел \"" + textMessage + "\" успешно добавлен в базу данных.";
                 final Department newDepartment = Department.builder()
                         .departmentName(textMessage)
                         .area(area)
                         .build();
 
                 departmentDAO.save(newDepartment);
+                output = "Отдел \"" + textMessage + "\" успешно добавлен в базу данных.";
                 messageUtils.changeUserState(appUser, BASIC);
             } else {
                 output = "Такая запись уже есть в базе данных. Введите заново или покиньте режим выбора.";

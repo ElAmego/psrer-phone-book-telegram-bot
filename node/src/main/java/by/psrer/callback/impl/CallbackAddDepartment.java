@@ -30,9 +30,9 @@ public final class CallbackAddDepartment implements Callback {
         final List<Area> areaList = areaDAO.findAllByOrderByAreaIdAsc();
 
         if (!areaList.isEmpty()) {
-            int inc = 0;
             output.append("Укажите номер участка к которому должен быть прикреплен отдел (Например: 1):\n");
 
+            int inc = 0;
             for (final Area area: areaList) {
                 output.append("\n").append(++inc).append(": ").append(area.getAreaName());
             }

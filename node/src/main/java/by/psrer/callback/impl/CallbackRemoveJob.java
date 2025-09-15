@@ -32,7 +32,6 @@ public final class CallbackRemoveJob implements Callback {
         output.append("Введите номер должности из списка, который вы хотите удалить из базы данных (Например: 1):\n");
 
         int inc = 0;
-
         for (final Job job: jobList) {
             output.append("\n").append(++inc).append(": ").append(job.getJobName());
         }

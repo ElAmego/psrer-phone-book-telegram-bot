@@ -33,12 +33,12 @@ public final class AddAreaSelection implements UserStateHandler {
             final Area selectedArea = areaDAO.findByAreaName(textMessage);
 
             if (selectedArea == null) {
-                output = "Участок \"" + textMessage + "\" успешно добавлен в базу данных.";
                 final Area newArea = Area.builder()
                         .areaName(textMessage)
                         .build();
 
                 areaDAO.save(newArea);
+                output = "Участок \"" + textMessage + "\" успешно добавлен в базу данных.";
                 messageUtils.changeUserState(appUser, BASIC);
             } else {
                 output = "Такая запись уже есть в базе данных. Введите заново или покиньте режим выбора.";

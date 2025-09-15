@@ -28,10 +28,10 @@ public final class CallbackRemoveAdmin implements Callback {
         final List<AppUser> adminList = appUserDAO.findByAppUserConfigIdRole(ADMIN);
         final StringBuilder output = new StringBuilder();
         final List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-        int inc = 0;
 
         output.append("Укажите Телеграм ID пользователя из списка у которого вы хотите отозвать доступ.\n");
 
+        int inc = 0;
         for (final AppUser admin: adminList) {
             output.append("\n").append(++inc).append(": ").append(admin.getFirstName()).append(" ")
                     .append(admin.getLastName()).append(", ").append("@").append(admin.getUsername())
