@@ -45,7 +45,7 @@ public final class AddEmployeeSelectionJob implements UserStateHandler {
                 appUserConfigDAO.save(appUserConfig);
 
                 messageUtils.changeUserState(appUser, ADD_EMPLOYEE_SELECTION_FIO);
-                output = "Введите ФИО нового сотрудника, например (Иванов Иван Иванович): ";
+                output = "Введите ФИО нового сотрудника (Например: Иванов Иван Иванович): ";
 
             } else {
                 output = "В списке нет выбранного вами значения. Введите корректное значение или покиньте режим выбора.";

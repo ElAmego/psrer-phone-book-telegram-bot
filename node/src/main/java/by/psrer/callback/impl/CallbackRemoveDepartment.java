@@ -29,7 +29,7 @@ public final class CallbackRemoveDepartment implements Callback {
         final List<Department> departmentList = departmentDAO.findAllByOrderByDepartmentIdAsc();
         final StringBuilder output = new StringBuilder();
 
-        output.append("Введите номер отдела из списка, который вы хотите удалить из базы данных (Например 1):\n");
+        output.append("Введите номер отдела из списка, который вы хотите удалить из базы данных (Например: 1):\n");
 
         int inc = 0;
 

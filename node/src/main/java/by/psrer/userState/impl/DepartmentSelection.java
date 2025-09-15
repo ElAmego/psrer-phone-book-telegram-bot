@@ -43,7 +43,7 @@ public final class DepartmentSelection implements UserStateHandler {
                         .findByDepartment_DepartmentIdOrderByEmployeeIdAsc(departmentId);
 
                 if (!employeeList.isEmpty()) {
-                    output.append("Список номеров:");
+                    output.append("Список номеров выбранного вами отдела:\n");
 
                     int inc = 0;
 
@@ -55,22 +55,18 @@ public final class DepartmentSelection implements UserStateHandler {
 
                     output.append("\n\nВы покинули режим выбора.");
                 } else {
-                    output.append("Список работников выбранного вами отдела пуст. Вы вышли из режима выбора.");
+                    output.append("Список сотрудников выбранного вами отдела пуст. Вы покинули режим выбора.");
                 }
 
                 messageUtils.changeUserState(appUser, BASIC);
             } else {
-                output.append("""
-                    В списке нет выбранного вами значения. Введите корректное значение или нажмите на кнопку \
-                    "Покинуть режим выбора".
-                    """);
+                output.append("В списке нет выбранного вами значения. Введите корректное значение или покиньте режим " +
+                        "выбора.");
                 inlineKeyboardButtonList.add(buttonFactory.cancel());
             }
         } else {
-            output.append("""
-                    Введенное вами значение не является цифрой. Введите корректное значение или нажмите на кнопку \
-                    "Покинуть режим выбора".
-                    """);
+            output.append("Введенное вами значение не является цифрой. Введите корректное значение или покиньте " +
+                    "режим выбора");
             inlineKeyboardButtonList.add(buttonFactory.cancel());
         }
 

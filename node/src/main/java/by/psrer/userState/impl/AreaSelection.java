@@ -48,37 +48,26 @@ public final class AreaSelection implements UserStateHandler {
                     final AppUserConfig appUserConfig = appUser.getAppUserConfigId();
                     int inc = 0;
 
-                    output.append("""
-                    Вы перешли в режим выбора. Для выбора необходимого отдела отправьте соответствующую цифру. \
-                    Нажмите на кнопку "Покинуть режим выбора" чтобы выйти из режима выбора.
-                
-                    Список отделов:
-                    """);
+                    output.append("Введите номер необходимого отдела из списка (Например: 1):\n");
 
                     for (final Department departmentFromList: departmentList) {
-                        output.append(++inc).append(": ")
-                                .append(departmentFromList.getDepartmentName()).append("\n");
+                        output.append("\n").append(++inc).append(": ").append(departmentFromList.getDepartmentName());
                     }
 
-                    // areaId
                     appUserConfig.getIntermediateData().put("areaId", areaId);
                     appUserConfigDAO.save(appUserConfig);
                     messageUtils.changeUserState(appUser, DEPARTMENT_SELECTION);
                 } else {
-                    output.append("Список отделов текущего участка пуст. Вы вышли из режима выбора.");
+                    output.append("Список отделов текущего участка пуст. Вы покинули режима выбора.");
                     messageUtils.changeUserState(appUser, BASIC);
                 }
             } else {
-                output.append("""
-                    В списке нет выбранного вами значения. Введите корректное значение или нажмите на кнопку \
-                    "Покинуть режим выбора"
-                    """);
+                output.append("В списке нет выбранного вами значения. Введите корректное значение или покиньте режим " +
+                        "выбора");
             }
         } else {
-            output.append("""
-                    Введенное вами значение не является цифрой. Введите корректное значение или нажмите на кнопку \
-                    "Покинуть режим выбора".
-                    """);
+            output.append("Введенное вами значение не является цифрой. Введите корректное значение или покиньте " +
+                    "режим выбора");
         }
 
         inlineKeyboardButtonList.add(buttonFactory.cancel());

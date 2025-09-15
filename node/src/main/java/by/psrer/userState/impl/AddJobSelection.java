@@ -33,7 +33,7 @@ public final class AddJobSelection implements UserStateHandler {
             final Job selectedJob = jobDAO.findByJobName(textMessage);
 
             if (selectedJob == null) {
-                output = "Должность \"" + textMessage + "\" успешно добавлен в базу данных.";
+                output = "Должность \"" + textMessage + "\" успешно добавлена в базу данных.";
                 final Job newJob = Job.builder()
                         .jobName(textMessage)
                         .build();

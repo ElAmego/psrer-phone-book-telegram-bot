@@ -29,7 +29,7 @@ public final class FioSelection implements UserStateHandler {
                 findByEmployeeNameContainingIgnoreCaseOrderByEmployeeNameAsc(textMessage);
 
         if (!employeeList.isEmpty()) {
-            output.append("Список работников по заданной подстроке \"").append(textMessage).append("\":");
+            output.append("Список сотрудников по заданной подстроке \"").append(textMessage).append("\":");
             int inc = 0;
             for (final Employee employeeFromList: employeeList) {
                 output.append("\n").append(++inc).append(": ").append(employeeFromList.getEmployeeName())
@@ -38,15 +38,10 @@ public final class FioSelection implements UserStateHandler {
                         .append(employeeFromList.getPhoneNumber());
             }
         } else {
-            output.append("Нет данных по заданной подстроке.");
+            output.append("В базе данных отсутствуют сотрудники по заданной подстроке.");
         }
 
-        output.append("""
-                
-                
-                Введите новую подстроку или нажмите на кнопку "Покинуть режим выбора" чтобы выйти из \
-                режима выбора.
-                """);
+        output.append("\n\nВведите новую подстроку или покиньте режим выбора.");
         inlineKeyboardButtonList.add(buttonFactory.cancel());
         messageUtils.sendReplacedTextMessage(appUser, new Answer(output.toString(), inlineKeyboardButtonList));
     }
